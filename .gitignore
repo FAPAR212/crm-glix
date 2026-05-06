@@ -1,0 +1,27 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependências futuras
+node_modules/
+.env
+.env.local
+.env.production
+
+# Build futuro
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Configurações sensíveis
+config/secrets.json
