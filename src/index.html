@@ -211,11 +211,7 @@
   .legend-val{margin-left:auto;font-weight:600;color:var(--text);min-width:30px;text-align:right}
   
   /* Settings */
-  .settings-grid{display:grid;grid-template-columns:200px 1fr;gap:20px}
-  .settings-nav{display:flex;flex-direction:column;gap:2px}
-  .settings-nav-item{padding:9px 14px;border-radius:8px;font-size:13.5px;cursor:pointer;color:var(--text2);transition:.15s}
-  .settings-nav-item:hover{background:var(--bg3);color:var(--text)}
-  .settings-nav-item.active{background:var(--accent-soft);color:var(--accent)}
+  /* settings-old-css-removed */
   .setting-group{margin-bottom:24px}
   .setting-group-title{font-family:var(--font2);font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
   .setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
@@ -920,7 +916,10 @@
       </div><!-- /settings-layout -->
     </div><!-- /page-settings -->
 
-    <!-- Modal Usuário -->
+  </div>
+</div>
+
+<!-- Modal Usuário -->
     <div class="modal-overlay hidden" id="user-modal-overlay" onclick="if(event.target===this)this.classList.add('hidden')">
       <div class="modal" style="width:480px">
         <div class="modal-header">
@@ -989,8 +988,6 @@
         </div>
       </div>
     </div>
-
-</div>
 
 <!-- Modal overlay -->
 <div class="modal-overlay hidden" id="modal-overlay" onclick="closeModalOutside(event)">
@@ -1082,6 +1079,7 @@ function navigate(page,el){
   if(page==='companies')renderCompanies();
   if(page==='tasks')renderTasks();
   if(page==='reports')renderRevenueChart();
+  if(page==='settings'){renderUsuarios();renderStages();}
 }
 
 // ── Contacts ─────────────────────────────────────────────────────────────────
@@ -1741,8 +1739,7 @@ function testSankhya() {
   }, 1500);
 }
 
-// Init settings
-renderUsuarios();
+// Init settings (chamado via navigate)
 
 </script>
 </body>
