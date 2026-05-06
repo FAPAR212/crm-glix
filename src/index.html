@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRM — Integração Sankhya</title>
+<title>CRM GLIX — Integração Sankhya</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -274,6 +274,49 @@
   /* Empty state */
   .empty{text-align:center;padding:40px;color:var(--text3);font-size:13px}
   .empty svg{width:40px;height:40px;fill:var(--border2);margin:0 auto 12px;display:block}
+
+  /* Settings CRUD */
+  .settings-layout{display:grid;grid-template-columns:210px 1fr;gap:20px;align-items:start}
+  .settings-sidebar{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:8px;display:flex;flex-direction:column;gap:2px;position:sticky;top:80px}
+  .settings-nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;cursor:pointer;color:var(--text2);transition:.15s}
+  .settings-nav-item:hover{background:var(--bg3);color:var(--text)}
+  .settings-nav-item.active{background:var(--accent-soft);color:var(--accent)}
+  .settings-nav-item svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
+  .settings-content{display:flex;flex-direction:column;gap:0}
+  .stab{display:none;flex-direction:column;gap:16px}
+  .stab.active{display:flex}
+  .stab-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+  .stab-title{font-family:var(--font2);font-size:17px;font-weight:700;color:var(--text)}
+  .stab-desc{font-size:13px;color:var(--text3);margin-top:2px}
+  .form-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:20px}
+  .form-section-title{font-family:var(--font2);font-size:13px;font-weight:600;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+  .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-hint{font-size:11px;color:var(--text3);margin-top:4px}
+  .color-pick{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:.15s}
+  .color-pick.selected{border-color:white;box-shadow:0 0 0 2px var(--accent)}
+  .color-pick:hover{transform:scale(1.15)}
+  .connection-status{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text2)}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--text3);flex-shrink:0}
+  .status-dot.ok{background:var(--green);box-shadow:0 0 6px var(--green)}
+  .status-dot.error{background:var(--red);box-shadow:0 0 6px var(--red)}
+  .status-dot.loading{background:var(--amber);animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .info-box{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--accent-soft);border:1px solid var(--accent)30;border-radius:8px;font-size:12px;color:var(--accent)}
+  .info-box svg{width:14px;height:14px;fill:var(--accent);flex-shrink:0}
+  .stage-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:.15s}
+  .stage-row:last-child{border-bottom:none}
+  .stage-row:hover{background:var(--bg3)}
+  .stage-drag{color:var(--text3);cursor:grab;padding:4px}
+  .stage-drag svg{width:16px;height:16px;fill:currentColor}
+  .stage-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .stage-name{flex:1;font-size:13px;color:var(--text);font-weight:500}
+  .stage-meta{font-size:12px;color:var(--text3)}
+  .user-avatar-sm{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0}
+  .perfil-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+  .perfil-badge.admin{background:var(--accent-soft);color:var(--accent)}
+  .perfil-badge.gestor{background:var(--purple-soft);color:var(--purple)}
+  .perfil-badge.vendedor{background:var(--green-soft);color:var(--green)}
+  .perfil-badge.visualizador{background:#ffffff0a;color:var(--text2)}
 </style>
 </head>
 <body>
@@ -285,7 +328,7 @@
       <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
     </div>
     <div>
-      <div class="logo-text">CRM Pro</div>
+      <div class="logo-text">CRM GLIX</div>
       <div class="logo-sub">Via Sankhya</div>
     </div>
   </div>
@@ -662,101 +705,291 @@
     
     <!-- SETTINGS -->
     <div class="page" id="page-settings">
-      <div class="settings-grid">
-        <div class="settings-nav">
-          <div class="settings-nav-item active">Geral</div>
-          <div class="settings-nav-item">Notificações</div>
-          <div class="settings-nav-item">Integrações</div>
-          <div class="settings-nav-item">Usuários</div>
-          <div class="settings-nav-item">Pipeline</div>
+      <div class="settings-layout">
+        
+        <!-- Nav lateral -->
+        <div class="settings-sidebar">
+          <div class="settings-nav-item active" onclick="showSettingsTab('empresa',this)">
+            <svg viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+            Empresa
+          </div>
+          <div class="settings-nav-item" onclick="showSettingsTab('usuarios',this)">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            Usuários
+            <span class="nav-badge" id="badge-usuarios" style="margin-left:auto">0</span>
+          </div>
+          <div class="settings-nav-item" onclick="showSettingsTab('pipeline',this)">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm4 5h12v2H8zm4 5h8v2h-8z"/></svg>
+            Pipeline
+          </div>
+          <div class="settings-nav-item" onclick="showSettingsTab('sankhya',this)">
+            <svg viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 20.82A1 1 0 005.22 22c1.54-1.14 4.88-3 9.78-3 2.94 0 5.38.7 7 2 .55-3.7-.3-7.5-5-13z"/></svg>
+            Sankhya ERP
+          </div>
+          <div class="settings-nav-item" onclick="showSettingsTab('notificacoes',this)">
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            Notificações
+          </div>
         </div>
-        <div>
-          <div class="card">
-            <div class="card-body">
-              <div class="setting-group">
-                <div class="setting-group-title">Informações da empresa</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-                  <div class="form-group"><label class="form-label">Nome da empresa</label><input class="form-input" value="Minha Empresa Ltda"></div>
-                  <div class="form-group"><label class="form-label">CNPJ</label><input class="form-input" value="00.000.000/0001-00"></div>
-                  <div class="form-group"><label class="form-label">Segmento</label><input class="form-input" value="Tecnologia"></div>
-                  <div class="form-group"><label class="form-label">Moeda padrão</label><select class="form-select"><option>BRL — Real</option><option>USD — Dólar</option></select></div>
-                </div>
-              </div>
-              <div class="setting-group">
-                <div class="setting-group-title">Integração Sankhya ERP</div>
-                <div class="setting-row">
-                  <div class="setting-info">
-                    <div class="setting-label">URL do servidor Sankhya</div>
-                    <div class="setting-desc">Endpoint da API REST do Sankhya</div>
-                  </div>
-                  <input class="setting-input" placeholder="https://sankhya.suaempresa.com.br" value="">
-                </div>
-                <div class="setting-row">
-                  <div class="setting-info">
-                    <div class="setting-label">Token de autenticação</div>
-                    <div class="setting-desc">Chave de integração do parceiro Sankhya</div>
-                  </div>
-                  <input class="setting-input" placeholder="sk_live_..." type="password" value="">
-                </div>
-                <div class="setting-row">
-                  <div class="setting-info">
-                    <div class="setting-label">Sincronizar clientes</div>
-                    <div class="setting-desc">Importar parceiros do Sankhya como contatos</div>
-                  </div>
-                  <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-                </div>
-                <div class="setting-row">
-                  <div class="setting-info">
-                    <div class="setting-label">Sincronizar pedidos</div>
-                    <div class="setting-desc">Criar pedidos no Sankhya ao fechar negócio</div>
-                  </div>
-                  <div class="toggle on" onclick="this.classList.toggle('on')"></div>
-                </div>
-                <div class="setting-row">
-                  <div class="setting-info">
-                    <div class="setting-label">Webhook de notas fiscais</div>
-                    <div class="setting-desc">Atualizar status do negócio ao emitir NF no Sankhya</div>
-                  </div>
-                  <div class="toggle" onclick="this.classList.toggle('on')"></div>
-                </div>
-                <div class="setting-row">
-                  <div class="setting-info">
-                    <div class="setting-label">Sincronização automática</div>
-                    <div class="setting-desc">Intervalo de sincronização dos dados</div>
-                  </div>
-                  <select class="setting-input" style="cursor:pointer">
-                    <option>A cada 15 minutos</option>
-                    <option>A cada hora</option>
-                    <option>Diariamente</option>
+
+        <div class="settings-content">
+
+          <!-- EMPRESA -->
+          <div class="stab active" id="stab-empresa">
+            <div class="stab-header">
+              <div><div class="stab-title">Dados da Empresa</div><div class="stab-desc">Informações cadastrais da organização</div></div>
+              <button class="btn btn-primary" onclick="saveEmpresa()">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                Salvar
+              </button>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Identificação</div>
+              <div class="form-grid-2">
+                <div class="form-group"><label class="form-label">Razão Social *</label><input class="form-input" id="emp-razao" value="GLIX QUIMICA" placeholder="Razão social"></div>
+                <div class="form-group"><label class="form-label">Nome Fantasia</label><input class="form-input" id="emp-fantasia" value="GLIX" placeholder="Nome fantasia"></div>
+                <div class="form-group"><label class="form-label">CNPJ *</label><input class="form-input" id="emp-cnpj" value="09.044.896/0001-85" placeholder="00.000.000/0001-00"></div>
+                <div class="form-group"><label class="form-label">Inscrição Estadual</label><input class="form-input" id="emp-ie" placeholder="IE"></div>
+                <div class="form-group"><label class="form-label">Segmento *</label>
+                  <select class="form-select" id="emp-segmento">
+                    <option selected>Indústria Saneantes</option><option>Tecnologia</option><option>Indústria Química</option><option>Serviços</option><option>Varejo</option><option>Outro</option>
                   </select>
                 </div>
-                <div style="margin-top:16px;display:flex;gap:10px">
-                  <button class="btn btn-primary" onclick="showToast('Configurações salvas com sucesso!')">Salvar configurações</button>
-                  <button class="btn btn-ghost" onclick="showToast('Testando conexão com Sankhya...')">Testar conexão</button>
+                <div class="form-group"><label class="form-label">Moeda padrão</label>
+                  <select class="form-select" id="emp-moeda">
+                    <option value="BRL" selected>BRL — Real Brasileiro</option><option value="USD">USD — Dólar</option><option value="EUR">EUR — Euro</option>
+                  </select>
                 </div>
               </div>
-              <div class="setting-group">
-                <div class="setting-group-title">Notificações</div>
-                <div class="setting-row">
-                  <div class="setting-info"><div class="setting-label">Atividades vencidas</div><div class="setting-desc">Alertar quando uma atividade estiver atrasada</div></div>
-                  <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Contato</div>
+              <div class="form-grid-2">
+                <div class="form-group"><label class="form-label">E-mail corporativo</label><input class="form-input" id="emp-email" type="email" value="gestorcomercial@glixquimica.com.br" placeholder="email@empresa.com.br"></div>
+                <div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="emp-telefone" placeholder="(00) 0000-0000"></div>
+                <div class="form-group"><label class="form-label">Site</label><input class="form-input" id="emp-site" placeholder="www.empresa.com.br"></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Endereço</div>
+              <div class="form-grid-2">
+                <div class="form-group"><label class="form-label">CEP</label><input class="form-input" id="emp-cep" placeholder="00000-000"></div>
+                <div class="form-group"><label class="form-label">Logradouro</label><input class="form-input" id="emp-rua" placeholder="Rua, Av..."></div>
+                <div class="form-group"><label class="form-label">Número</label><input class="form-input" id="emp-num" placeholder="Nº"></div>
+                <div class="form-group"><label class="form-label">Complemento</label><input class="form-input" id="emp-comp" placeholder="Sala, Bloco..."></div>
+                <div class="form-group"><label class="form-label">Bairro</label><input class="form-input" id="emp-bairro" placeholder="Bairro"></div>
+                <div class="form-group"><label class="form-label">Cidade / UF</label><input class="form-input" id="emp-cidade" placeholder="Cidade/UF"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- USUÁRIOS -->
+          <div class="stab" id="stab-usuarios">
+            <div class="stab-header">
+              <div><div class="stab-title">Usuários do Sistema</div><div class="stab-desc">Gerencie quem tem acesso ao CRM GLIX</div></div>
+              <button class="btn btn-primary" onclick="openUserModal()">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                Novo usuário
+              </button>
+            </div>
+            <div class="card">
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Usuário</th><th>E-mail</th><th>Perfil</th><th>Status</th><th>Criado em</th><th></th></tr></thead>
+                  <tbody id="usuarios-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- PIPELINE -->
+          <div class="stab" id="stab-pipeline">
+            <div class="stab-header">
+              <div><div class="stab-title">Estágios do Pipeline</div><div class="stab-desc">Configure os estágios do funil de vendas</div></div>
+              <button class="btn btn-primary" onclick="openStageModal()">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                Novo estágio
+              </button>
+            </div>
+            <div class="card"><div class="card-body" style="padding:0"><div id="pipeline-stages-list"></div></div></div>
+            <div class="info-box">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+              Os estágios aqui configurados refletem no Kanban do Pipeline
+            </div>
+          </div>
+
+          <!-- SANKHYA -->
+          <div class="stab" id="stab-sankhya">
+            <div class="stab-header">
+              <div><div class="stab-title">Integração Sankhya ERP</div><div class="stab-desc">Configure a conexão com o ERP Sankhya</div></div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-ghost" onclick="testSankhya()">
+                  <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                  Testar conexão
+                </button>
+                <button class="btn btn-primary" onclick="saveSankhya()">
+                  <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                  Salvar
+                </button>
+              </div>
+            </div>
+            <div class="connection-status">
+              <div class="status-dot" id="sankhya-dot"></div>
+              <span id="sankhya-status-text">Não configurado — preencha a URL e salve</span>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Credenciais de Acesso</div>
+              <div class="form-grid-2">
+                <div class="form-group" style="grid-column:1/-1">
+                  <label class="form-label">URL do servidor Sankhya *</label>
+                  <input class="form-input" id="sk-url" placeholder="https://sankhya.glixquimica.com.br">
+                  <div class="form-hint">Endereço do servidor onde o Sankhya está instalado</div>
                 </div>
-                <div class="setting-row">
-                  <div class="setting-info"><div class="setting-label">Novo lead criado</div><div class="setting-desc">Notificar ao receber um novo lead</div></div>
-                  <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+                <div class="form-group"><label class="form-label">Usuário Sankhya</label><input class="form-input" id="sk-usuario" placeholder="usuário de integração"></div>
+                <div class="form-group">
+                  <label class="form-label">Senha / Token</label>
+                  <div style="position:relative">
+                    <input class="form-input" id="sk-senha" type="password" placeholder="senha ou token de API" style="padding-right:40px">
+                    <button onclick="this.previousElementSibling.type=this.previousElementSibling.type==='password'?'text':'password'" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3)">
+                      <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    </button>
+                  </div>
                 </div>
-                <div class="setting-row">
-                  <div class="setting-info"><div class="setting-label">Negócio fechado</div><div class="setting-desc">Celebrar vitórias com notificação</div></div>
-                  <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+                <div class="form-group"><label class="form-label">CODPARC (código do parceiro)</label><input class="form-input" id="sk-codparc" type="number" placeholder="Ex: 1001"></div>
+                <div class="form-group"><label class="form-label">Tipo de operação de venda</label><input class="form-input" id="sk-tipoper" type="number" placeholder="Ex: 1001"></div>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Sincronizações</div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Sincronizar clientes (Parceiros → Contatos)</div><div class="setting-desc">Importa parceiros do Sankhya como contatos no CRM</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Criar pedidos ao fechar negócio</div><div class="setting-desc">Cria pedido no Sankhya automaticamente ao fechar negócio no CRM</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Webhook — Nota fiscal emitida</div><div class="setting-desc">Atualiza negócio no CRM quando NF for emitida no Sankhya</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Intervalo de sincronização automática</div></div>
+                <select class="filter-select" id="sk-intervalo" style="height:32px;font-size:12px">
+                  <option>A cada 15 minutos</option><option>A cada 30 minutos</option><option>A cada hora</option><option>Diariamente</option><option>Manual</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Endpoint Webhook (receber do Sankhya)</div>
+              <div class="form-group">
+                <label class="form-label">URL para configurar nos eventos do Sankhya</label>
+                <div style="display:flex;gap:8px">
+                  <input class="form-input" id="sk-webhook-url" value="https://fapar212.github.io/crm-glix/webhook/sankhya" readonly style="background:var(--bg3);color:var(--text3);font-size:12px">
+                  <button class="btn btn-ghost" onclick="navigator.clipboard.writeText(document.getElementById('sk-webhook-url').value);showToast('URL copiada!')" style="flex-shrink:0">Copiar</button>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- NOTIFICAÇÕES -->
+          <div class="stab" id="stab-notificacoes">
+            <div class="stab-header">
+              <div><div class="stab-title">Notificações</div><div class="stab-desc">Configure quando e como deseja ser alertado</div></div>
+              <button class="btn btn-primary" onclick="showToast('Preferências de notificação salvas!')">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                Salvar
+              </button>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Alertas de Atividades</div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Atividades vencidas</div><div class="setting-desc">Alertar quando uma atividade ultrapassar o prazo</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Atividades próximas do vencimento</div><div class="setting-desc">Notificar antes do prazo expirar</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Antecedência do alerta</div></div>
+                <select class="filter-select" style="height:32px;font-size:12px"><option>1 hora antes</option><option>2 horas antes</option><option selected>1 dia antes</option><option>2 dias antes</option></select>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Alertas de Negócios</div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Novo lead criado</div><div class="setting-desc">Notificar quando um novo lead for adicionado</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Negócio fechado</div><div class="setting-desc">Notificação de vitória ao fechar um negócio</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Negócio parado</div><div class="setting-desc">Alertar quando um negócio ficar sem movimentação</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Tempo sem movimentação</div></div>
+                <select class="filter-select" style="height:32px;font-size:12px"><option>7 dias</option><option selected>15 dias</option><option>30 dias</option></select>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="form-section-title">Canal de notificações</div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Notificações no sistema</div><div class="setting-desc">Exibir alertas dentro do CRM GLIX</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+              <div class="setting-row"><div class="setting-info"><div class="setting-label">Notificações por e-mail</div><div class="setting-desc">Enviar alertas para o e-mail do usuário</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+              <div class="form-group" style="margin-top:14px"><label class="form-label">E-mail para notificações</label><input class="form-input" id="notif-email" value="gestorcomercial@glixquimica.com.br" placeholder="email@empresa.com.br"></div>
+            </div>
+          </div>
+
+        </div><!-- /settings-content -->
+      </div><!-- /settings-layout -->
+    </div><!-- /page-settings -->
+
+    <!-- Modal Usuário -->
+    <div class="modal-overlay hidden" id="user-modal-overlay" onclick="if(event.target===this)this.classList.add('hidden')">
+      <div class="modal" style="width:480px">
+        <div class="modal-header">
+          <div class="modal-title" id="user-modal-title">Novo usuário</div>
+          <button class="modal-close" onclick="document.getElementById('user-modal-overlay').classList.add('hidden')"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="user-edit-id">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Nome *</label><input class="form-input" id="user-nome" placeholder="Nome completo"></div>
+            <div class="form-group"><label class="form-label">Sobrenome</label><input class="form-input" id="user-sobrenome" placeholder="Sobrenome"></div>
+          </div>
+          <div class="form-group"><label class="form-label">E-mail *</label><input class="form-input" id="user-email" type="email" placeholder="email@glixquimica.com.br"></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Perfil *</label>
+              <select class="form-select" id="user-perfil">
+                <option value="admin">Administrador</option><option value="gestor">Gestor de Vendas</option><option value="vendedor" selected>Vendedor</option><option value="visualizador">Visualizador</option>
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label">Status</label>
+              <select class="form-select" id="user-status"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select>
+            </div>
+          </div>
+          <div class="form-group" id="user-senha-group"><label class="form-label">Senha *</label><input class="form-input" id="user-senha" type="password" placeholder="Senha de acesso"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="document.getElementById('user-modal-overlay').classList.add('hidden')">Cancelar</button>
+          <button class="btn btn-primary" onclick="saveUser()">Salvar usuário</button>
         </div>
       </div>
     </div>
 
-  </div>
+    <!-- Modal Estágio Pipeline -->
+    <div class="modal-overlay hidden" id="stage-modal-overlay" onclick="if(event.target===this)this.classList.add('hidden')">
+      <div class="modal" style="width:400px">
+        <div class="modal-header">
+          <div class="modal-title" id="stage-modal-title">Novo estágio</div>
+          <button class="modal-close" onclick="document.getElementById('stage-modal-overlay').classList.add('hidden')"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="stage-edit-id">
+          <div class="form-group"><label class="form-label">Nome do estágio *</label><input class="form-input" id="stage-nome" placeholder="Ex: Qualificação"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Cor</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px" id="stage-cores">
+                <div class="color-pick selected" style="background:#3b82f6" data-cor="#3b82f6" onclick="selectColor(this)"></div>
+                <div class="color-pick" style="background:#22c55e" data-cor="#22c55e" onclick="selectColor(this)"></div>
+                <div class="color-pick" style="background:#a855f7" data-cor="#a855f7" onclick="selectColor(this)"></div>
+                <div class="color-pick" style="background:#f59e0b" data-cor="#f59e0b" onclick="selectColor(this)"></div>
+                <div class="color-pick" style="background:#ef4444" data-cor="#ef4444" onclick="selectColor(this)"></div>
+                <div class="color-pick" style="background:#06b6d4" data-cor="#06b6d4" onclick="selectColor(this)"></div>
+                <div class="color-pick" style="background:#ec4899" data-cor="#ec4899" onclick="selectColor(this)"></div>
+                <div class="color-pick" style="background:#f97316" data-cor="#f97316" onclick="selectColor(this)"></div>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label">Probabilidade padrão (%)</label><input class="form-input" id="stage-prob" type="number" min="0" max="100" value="50" placeholder="50"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Tipo</label>
+            <select class="form-select" id="stage-tipo"><option value="normal">Normal</option><option value="ganho">Ganho (fechado)</option><option value="perdido">Perdido</option></select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost" onclick="document.getElementById('stage-modal-overlay').classList.add('hidden')">Cancelar</button>
+          <button class="btn btn-primary" onclick="saveStage()">Salvar estágio</button>
+        </div>
+      </div>
+    </div>
+
 </div>
 
 <!-- Modal overlay -->
@@ -1215,6 +1448,302 @@ renderContacts();
 renderCompanies();
 renderTasks();
 setTimeout(renderRevenueChart,100);
+
+// ── SETTINGS CRUD ────────────────────────────────────────────────────────────
+
+// Estado das configurações
+const settingsState = {
+  usuarios: [
+    {id:1, nome:'João', sobrenome:'Martins', email:'joao.martins@glixquimica.com.br', perfil:'admin', status:'ativo', criado:'06/05/2025'},
+    {id:2, nome:'Ana', sobrenome:'Silva', email:'ana.silva@glixquimica.com.br', perfil:'gestor', status:'ativo', criado:'06/05/2025'},
+    {id:3, nome:'Carlos', sobrenome:'Neto', email:'carlos.neto@glixquimica.com.br', perfil:'vendedor', status:'ativo', criado:'06/05/2025'},
+    {id:4, nome:'Mariana', sobrenome:'Rocha', email:'mariana.rocha@glixquimica.com.br', perfil:'vendedor', status:'ativo', criado:'06/05/2025'},
+  ],
+  stages: [
+    {id:1, nome:'Prospecção', cor:'#3b82f6', prob:15, tipo:'normal'},
+    {id:2, nome:'Qualificado', cor:'#8b5cf6', prob:35, tipo:'normal'},
+    {id:3, nome:'Proposta', cor:'#a855f7', prob:55, tipo:'normal'},
+    {id:4, nome:'Negociação', cor:'#f59e0b', prob:75, tipo:'normal'},
+    {id:5, nome:'Fechado', cor:'#22c55e', prob:100, tipo:'ganho'},
+  ],
+  editingUserId: null,
+  editingStageId: null,
+  selectedColor: '#3b82f6',
+};
+
+// ── Tabs de configurações ────────────────────────────────────────────────────
+function showSettingsTab(tab, el) {
+  document.querySelectorAll('.stab').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('stab-' + tab).classList.add('active');
+  el.classList.add('active');
+  if (tab === 'usuarios') renderUsuarios();
+  if (tab === 'pipeline') renderStages();
+}
+
+// ── Empresa ─────────────────────────────────────────────────────────────────
+function saveEmpresa() {
+  const razao = document.getElementById('emp-razao').value.trim();
+  if (!razao) { alert('Informe a razão social.'); return; }
+  showToast('Dados da empresa salvos com sucesso!');
+}
+
+// ── Usuários ─────────────────────────────────────────────────────────────────
+const avatarGradients = [
+  'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+  'linear-gradient(135deg,#22c55e,#3b82f6)',
+  'linear-gradient(135deg,#f59e0b,#ef4444)',
+  'linear-gradient(135deg,#a855f7,#ec4899)',
+  'linear-gradient(135deg,#06b6d4,#22c55e)',
+];
+
+const perfilLabels = {admin:'Administrador', gestor:'Gestor', vendedor:'Vendedor', visualizador:'Visualizador'};
+const perfilClass  = {admin:'admin', gestor:'gestor', vendedor:'vendedor', visualizador:'visualizador'};
+
+function renderUsuarios() {
+  const tbody = document.getElementById('usuarios-tbody');
+  const badge = document.getElementById('badge-usuarios');
+  if (badge) badge.textContent = settingsState.usuarios.filter(u => u.status === 'ativo').length;
+
+  tbody.innerHTML = settingsState.usuarios.map((u, i) => `
+    <tr>
+      <td>
+        <div class="contact-cell">
+          <div class="user-avatar-sm" style="background:${avatarGradients[i % avatarGradients.length]}">
+            ${u.nome[0]}${u.sobrenome?u.sobrenome[0]:''}
+          </div>
+          <div>
+            <div class="contact-name">${u.nome} ${u.sobrenome||''}</div>
+          </div>
+        </div>
+      </td>
+      <td style="color:var(--accent)">${u.email}</td>
+      <td><span class="perfil-badge ${perfilClass[u.perfil]}">${perfilLabels[u.perfil]}</span></td>
+      <td><span class="badge ${u.status==='ativo'?'green':'gray'}">${u.status}</span></td>
+      <td style="color:var(--text3)">${u.criado}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="action-btn" onclick="editUser(${u.id})" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="action-btn" onclick="deleteUser(${u.id})" title="Excluir" style="color:var(--red)">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text3)">Nenhum usuário cadastrado.</td></tr>';
+}
+
+function openUserModal(id) {
+  settingsState.editingUserId = null;
+  document.getElementById('user-edit-id').value = '';
+  document.getElementById('user-modal-title').textContent = 'Novo usuário';
+  document.getElementById('user-nome').value = '';
+  document.getElementById('user-sobrenome').value = '';
+  document.getElementById('user-email').value = '';
+  document.getElementById('user-perfil').value = 'vendedor';
+  document.getElementById('user-status').value = 'ativo';
+  document.getElementById('user-senha').value = '';
+  document.getElementById('user-senha-group').style.display = 'block';
+  document.getElementById('user-modal-overlay').classList.remove('hidden');
+}
+
+function editUser(id) {
+  const u = settingsState.usuarios.find(x => x.id === id);
+  if (!u) return;
+  settingsState.editingUserId = id;
+  document.getElementById('user-edit-id').value = id;
+  document.getElementById('user-modal-title').textContent = 'Editar usuário';
+  document.getElementById('user-nome').value = u.nome;
+  document.getElementById('user-sobrenome').value = u.sobrenome || '';
+  document.getElementById('user-email').value = u.email;
+  document.getElementById('user-perfil').value = u.perfil;
+  document.getElementById('user-status').value = u.status;
+  document.getElementById('user-senha').value = '';
+  document.getElementById('user-senha-group').style.display = 'none';
+  document.getElementById('user-modal-overlay').classList.remove('hidden');
+}
+
+function saveUser() {
+  const nome = document.getElementById('user-nome').value.trim();
+  const email = document.getElementById('user-email').value.trim();
+  if (!nome || !email) { alert('Nome e e-mail são obrigatórios.'); return; }
+
+  const editId = settingsState.editingUserId;
+  if (editId) {
+    const u = settingsState.usuarios.find(x => x.id === editId);
+    if (u) {
+      u.nome = nome;
+      u.sobrenome = document.getElementById('user-sobrenome').value;
+      u.email = email;
+      u.perfil = document.getElementById('user-perfil').value;
+      u.status = document.getElementById('user-status').value;
+    }
+    showToast('Usuário atualizado!');
+  } else {
+    settingsState.usuarios.push({
+      id: Date.now(),
+      nome,
+      sobrenome: document.getElementById('user-sobrenome').value,
+      email,
+      perfil: document.getElementById('user-perfil').value,
+      status: document.getElementById('user-status').value,
+      criado: new Date().toLocaleDateString('pt-BR'),
+    });
+    showToast('Usuário criado com sucesso!');
+  }
+  document.getElementById('user-modal-overlay').classList.add('hidden');
+  renderUsuarios();
+}
+
+function deleteUser(id) {
+  if (!confirm('Deseja remover este usuário?')) return;
+  settingsState.usuarios = settingsState.usuarios.filter(u => u.id !== id);
+  renderUsuarios();
+  showToast('Usuário removido.');
+}
+
+// ── Estágios Pipeline ────────────────────────────────────────────────────────
+function renderStages() {
+  const list = document.getElementById('pipeline-stages-list');
+  list.innerHTML = settingsState.stages.map(s => `
+    <div class="stage-row" data-id="${s.id}">
+      <div class="stage-drag" title="Arrastar">
+        <svg viewBox="0 0 24 24"><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </div>
+      <div class="stage-dot" style="background:${s.cor}"></div>
+      <div class="stage-name">${s.nome}</div>
+      <div class="stage-meta">${s.prob}% · ${s.tipo==='ganho'?'<span style="color:var(--green)">Ganho</span>':s.tipo==='perdido'?'<span style="color:var(--red)">Perdido</span>':'Normal'}</div>
+      <div style="display:flex;gap:6px;margin-left:auto">
+        <button class="action-btn" onclick="editStage(${s.id})" title="Editar">
+          <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+        </button>
+        <button class="action-btn" onclick="deleteStage(${s.id})" title="Excluir" style="color:var(--red)">
+          <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('') || '<div class="empty">Nenhum estágio configurado.</div>';
+}
+
+function openStageModal() {
+  settingsState.editingStageId = null;
+  settingsState.selectedColor = '#3b82f6';
+  document.getElementById('stage-modal-title').textContent = 'Novo estágio';
+  document.getElementById('stage-edit-id').value = '';
+  document.getElementById('stage-nome').value = '';
+  document.getElementById('stage-prob').value = '50';
+  document.getElementById('stage-tipo').value = 'normal';
+  document.querySelectorAll('.color-pick').forEach(c => c.classList.remove('selected'));
+  document.querySelector('.color-pick').classList.add('selected');
+  document.getElementById('stage-modal-overlay').classList.remove('hidden');
+}
+
+function editStage(id) {
+  const s = settingsState.stages.find(x => x.id === id);
+  if (!s) return;
+  settingsState.editingStageId = id;
+  settingsState.selectedColor = s.cor;
+  document.getElementById('stage-modal-title').textContent = 'Editar estágio';
+  document.getElementById('stage-edit-id').value = id;
+  document.getElementById('stage-nome').value = s.nome;
+  document.getElementById('stage-prob').value = s.prob;
+  document.getElementById('stage-tipo').value = s.tipo;
+  document.querySelectorAll('.color-pick').forEach(c => {
+    c.classList.toggle('selected', c.dataset.cor === s.cor);
+  });
+  document.getElementById('stage-modal-overlay').classList.remove('hidden');
+}
+
+function saveStage() {
+  const nome = document.getElementById('stage-nome').value.trim();
+  if (!nome) { alert('Informe o nome do estágio.'); return; }
+  const editId = settingsState.editingStageId;
+  if (editId) {
+    const s = settingsState.stages.find(x => x.id === editId);
+    if (s) {
+      s.nome = nome;
+      s.cor = settingsState.selectedColor;
+      s.prob = parseInt(document.getElementById('stage-prob').value) || 50;
+      s.tipo = document.getElementById('stage-tipo').value;
+    }
+    showToast('Estágio atualizado!');
+  } else {
+    settingsState.stages.push({
+      id: Date.now(), nome,
+      cor: settingsState.selectedColor,
+      prob: parseInt(document.getElementById('stage-prob').value) || 50,
+      tipo: document.getElementById('stage-tipo').value,
+    });
+    showToast('Estágio criado!');
+  }
+  // Sincronizar com state.deals
+  syncStagesToDeals();
+  document.getElementById('stage-modal-overlay').classList.add('hidden');
+  renderStages();
+}
+
+function deleteStage(id) {
+  if (settingsState.stages.length <= 1) { alert('O pipeline precisa ter ao menos um estágio.'); return; }
+  if (!confirm('Remover este estágio? Negócios nele serão movidos para o primeiro estágio.')) return;
+  settingsState.stages = settingsState.stages.filter(s => s.id !== id);
+  syncStagesToDeals();
+  renderStages();
+  showToast('Estágio removido.');
+}
+
+function selectColor(el) {
+  document.querySelectorAll('.color-pick').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  settingsState.selectedColor = el.dataset.cor;
+}
+
+function syncStagesToDeals() {
+  // Garante que state.deals tenha todos os estágios do settings
+  settingsState.stages.forEach(s => {
+    if (!state.deals[s.nome]) state.deals[s.nome] = [];
+  });
+  // Atualiza stageColors no pipeline
+  settingsState.stages.forEach(s => { stageColors[s.nome] = s.cor; });
+}
+
+// ── Sankhya ──────────────────────────────────────────────────────────────────
+function saveSankhya() {
+  const url = document.getElementById('sk-url').value.trim();
+  if (!url) { alert('Informe a URL do servidor Sankhya.'); return; }
+  const dot = document.getElementById('sankhya-dot');
+  const txt = document.getElementById('sankhya-status-text');
+  dot.className = 'status-dot loading';
+  txt.textContent = 'Salvando...';
+  setTimeout(() => {
+    dot.className = 'status-dot ok';
+    txt.textContent = 'Configuração salva — aguardando primeira sincronização';
+    showToast('Configurações Sankhya salvas!');
+  }, 800);
+}
+
+function testSankhya() {
+  const url = document.getElementById('sk-url').value.trim();
+  if (!url) { showToast('Informe a URL do servidor Sankhya primeiro.'); return; }
+  const dot = document.getElementById('sankhya-dot');
+  const txt = document.getElementById('sankhya-status-text');
+  dot.className = 'status-dot loading';
+  txt.textContent = 'Testando conexão com ' + url + '...';
+  setTimeout(() => {
+    // Simula resultado (em produção, faria fetch real)
+    const ok = url.startsWith('http');
+    dot.className = 'status-dot ' + (ok ? 'ok' : 'error');
+    txt.textContent = ok
+      ? 'Conexão estabelecida com sucesso!'
+      : 'Erro: não foi possível conectar ao servidor Sankhya';
+    showToast(ok ? '✓ Conexão Sankhya OK!' : '✗ Falha na conexão Sankhya');
+  }, 1500);
+}
+
+// Init settings
+renderUsuarios();
+
 </script>
 </body>
 </html>
