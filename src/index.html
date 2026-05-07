@@ -351,14 +351,14 @@
 
 
   /* ── LOGIN ─────────────────────────────────────────────────────────────── */
-  .login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;flex-direction:column;gap:0}
+  .login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0a0c10 0%,#0d1520 50%,#0a0c10 100%);display:flex;align-items:center;justify-content:center;z-index:200;flex-direction:column;gap:0}
   .login-screen.hidden{display:none}
-  .login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,#3b82f620 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,#a855f715 0%,transparent 50%);pointer-events:none}
-  .login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:40px;width:380px;max-width:95vw;position:relative;z-index:1}
-  .login-logo{text-align:center;margin-bottom:28px}
-  .login-logo img{height:44px;max-width:180px;object-fit:contain;filter:brightness(0) invert(1)}
+  .login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,#3b82f625 0%,transparent 55%),radial-gradient(ellipse at 75% 25%,#22c55e12 0%,transparent 45%),radial-gradient(ellipse at 60% 80%,#a855f710 0%,transparent 40%);pointer-events:none}
+  .login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:24px;padding:44px 40px;width:400px;max-width:95vw;position:relative;z-index:1;box-shadow:0 24px 60px #00000060}
+  .login-logo{text-align:center;margin-bottom:24px;padding:16px;background:var(--bg3);border-radius:14px;border:1px solid var(--border)}
+  .login-logo img{height:52px;max-width:200px;object-fit:contain}
   .login-logo-fallback{font-family:var(--font2);font-size:24px;font-weight:700;color:var(--text);display:none}
-  .login-subtitle{text-align:center;font-size:13px;color:var(--text3);margin-top:6px;margin-bottom:32px}
+  .login-subtitle{text-align:center;font-size:13px;color:var(--text3);margin-top:8px;margin-bottom:32px;letter-spacing:.3px}
   .login-group{margin-bottom:16px}
   .login-label{font-size:12px;color:var(--text2);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:.5px}
   .login-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:11px 14px;color:var(--text);font-size:14px;font-family:var(--font);outline:none;transition:.2s}
