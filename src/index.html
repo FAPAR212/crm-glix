@@ -1234,12 +1234,23 @@
 </div>
 
 <script>
-// ── Data store ──────────────────────────────────────────────────────────────
-const colors=['#3b82f6','#22c55e','#a855f7','#f59e0b','#ef4444','#06b6d4','#ec4899'];
-const avatarColors=['linear-gradient(135deg,#3b82f6,#8b5cf6)','linear-gradient(135deg,#22c55e,#3b82f6)','linear-gradient(135deg,#f59e0b,#ef4444)','linear-gradient(135deg,#a855f7,#ec4899)','linear-gradient(135deg,#06b6d4,#22c55e)'];
 
-const state={
-  contacts:[
+// ═══════════════════════════════════════════════════════════════════
+//  CRM GLIX — JavaScript Completo v4.0
+//  Sem funções duplicadas, CRUD funcional em todos os módulos
+// ═══════════════════════════════════════════════════════════════════
+
+// ── ESTADO GLOBAL ────────────────────────────────────────────────────────────
+const avatarColors = [
+  'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+  'linear-gradient(135deg,#22c55e,#3b82f6)',
+  'linear-gradient(135deg,#f59e0b,#ef4444)',
+  'linear-gradient(135deg,#a855f7,#ec4899)',
+  'linear-gradient(135deg,#06b6d4,#22c55e)',
+];
+
+const state = {
+  contacts: [
     {id:1,name:'Ana Beatriz',company:'Tech Solutions',role:'CEO',email:'ana@tech.com.br',phone:'(11) 9 8877-6655',status:'ativo',owner:'Ana Silva',color:0},
     {id:2,name:'Roberto Lima',company:'Grupo Mardan',role:'Diretor Comercial',email:'roberto@mardan.com',phone:'(21) 9 7766-5544',status:'ativo',owner:'Carlos Neto',color:1},
     {id:3,name:'Carla Santos',company:'Inovação Corp',role:'Gerente de TI',email:'carla@inovacao.com',phone:'(11) 9 6655-4433',status:'lead',owner:'Mariana Rocha',color:2},
@@ -1247,7 +1258,7 @@ const state={
     {id:5,name:'Fernanda Costa',company:'Digital Works',role:'COO',email:'fernanda@digital.com',phone:'(41) 9 4433-2211',status:'ativo',owner:'Carlos Neto',color:4},
     {id:6,name:'Marcos Oliveira',company:'StartupBR',role:'Founder',email:'marcos@startup.com',phone:'(11) 9 3322-1100',status:'lead',owner:'Mariana Rocha',color:0},
   ],
-  companies:[
+  companies: [
     {id:1,name:'Tech Solutions',segment:'Tecnologia',size:'Média',city:'São Paulo/SP',contacts:3,deals:2,revenue:'R$180K',color:'#3b82f6'},
     {id:2,name:'Grupo Mardan',segment:'Indústria',size:'Grande',city:'Rio de Janeiro/RJ',contacts:5,deals:1,revenue:'R$420K',color:'#22c55e'},
     {id:3,name:'Inovação Corp',segment:'Tecnologia',size:'Pequena',city:'Belo Horizonte/MG',contacts:2,deals:3,revenue:'R$95K',color:'#a855f7'},
@@ -1255,28 +1266,28 @@ const state={
     {id:5,name:'Digital Works',segment:'Serviços',size:'Pequena',city:'Brasília/DF',contacts:2,deals:2,revenue:'R$78K',color:'#ef4444'},
     {id:6,name:'StartupBR',segment:'Tecnologia',size:'Pequena',city:'São Paulo/SP',contacts:1,deals:1,revenue:'R$32K',color:'#06b6d4'},
   ],
-  deals:{
-    'Prospecção':[
+  deals: {
+    'Prospecção': [
       {id:1,name:'CRM Upgrade',company:'Tech Solutions',value:'R$45.000',prob:'20%',owner:'AS',ownerColor:'#3b82f6',date:'15/06'},
       {id:2,name:'ERP Integration',company:'StartupBR',value:'R$28.000',prob:'15%',owner:'MR',ownerColor:'#a855f7',date:'20/06'},
     ],
-    'Qualificado':[
+    'Qualificado': [
       {id:3,name:'Suite Completa',company:'Inovação Corp',value:'R$92.000',prob:'35%',owner:'CN',ownerColor:'#22c55e',date:'10/06'},
       {id:4,name:'Módulo Financeiro',company:'Digital Works',value:'R$34.000',prob:'40%',owner:'AS',ownerColor:'#3b82f6',date:'08/06'},
     ],
-    'Proposta':[
+    'Proposta': [
       {id:5,name:'Consultoria ERP',company:'Grupo Mardan',value:'R$156.000',prob:'60%',owner:'MR',ownerColor:'#a855f7',date:'05/06'},
       {id:6,name:'Implantação Total',company:'Beta Sistemas',value:'R$78.000',prob:'55%',owner:'CN',ownerColor:'#22c55e',date:'12/06'},
     ],
-    'Negociação':[
+    'Negociação': [
       {id:7,name:'Renovação Anual',company:'Tech Solutions',value:'R$68.000',prob:'75%',owner:'AS',ownerColor:'#3b82f6',date:'03/06'},
     ],
-    'Fechado':[
+    'Fechado': [
       {id:8,name:'Setup Premium',company:'Grupo Mardan',value:'R$210.000',prob:'100%',owner:'CN',ownerColor:'#22c55e',date:'01/06'},
       {id:9,name:'Licenças 50 users',company:'StartupBR',value:'R$32.000',prob:'100%',owner:'MR',ownerColor:'#a855f7',date:'28/05'},
     ]
   },
-  tasks:[
+  tasks: [
     {id:1,title:'Retornar ligação do cliente Tech Solutions',done:false,priority:'high',contact:'Ana Beatriz',due:'Hoje',tag:'Ligação'},
     {id:2,title:'Enviar proposta revisada — Grupo Mardan',done:false,priority:'high',contact:'Roberto Lima',due:'Hoje 17h',tag:'Proposta'},
     {id:3,title:'Agendar demo do produto para Inovação Corp',done:false,priority:'med',contact:'Carla Santos',due:'Amanhã',tag:'Demo'},
@@ -1284,95 +1295,513 @@ const state={
     {id:5,title:'Atualizar forecast do mês no sistema',done:true,priority:'low',contact:'',due:'Ontem',tag:'Interno'},
     {id:6,title:'Preparar apresentação para reunião trimestral',done:true,priority:'med',contact:'',due:'Seg',tag:'Interno'},
   ],
-  modalType:'',
-  dragId:null,
-  dragStage:null,
+  dragId: null,
+  dragStage: null,
+  modalType: '',
+  editingContactId: null,
+  editingCompanyId: null,
 };
 
-// ── Navigation ───────────────────────────────────────────────────────────────
-function navigate(page,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  el.classList.add('active');
-  const titles={dashboard:'Dashboard',pipeline:'Pipeline de negócios',contacts:'Contatos',companies:'Empresas',tasks:'Atividades',reports:'Relatórios',settings:'Configurações'};
-  document.getElementById('page-title').textContent=titles[page]||page;
-  if(page==='contacts')renderContacts();
-  if(page==='pipeline')renderKanban();
-  if(page==='companies')renderCompanies();
-  if(page==='tasks')renderTasks();
-  if(page==='reports')renderRevenueChart();
-  if(page==='settings'){renderUsuarios();renderStages();}
+const settingsState = {
+  usuarios: [
+    {id:1,nome:'Fabiano',sobrenome:'Aparecido',email:'gestorcomercial@glixquimica.com.br',perfil:'admin',status:'ativo',criado:'06/05/2026'},
+    {id:2,nome:'Ana',sobrenome:'Silva',email:'ana.silva@glixquimica.com.br',perfil:'gestor',status:'ativo',criado:'06/05/2026'},
+    {id:3,nome:'Carlos',sobrenome:'Neto',email:'carlos.neto@glixquimica.com.br',perfil:'vendedor',status:'ativo',criado:'06/05/2026'},
+    {id:4,nome:'Mariana',sobrenome:'Rocha',email:'mariana.rocha@glixquimica.com.br',perfil:'vendedor',status:'ativo',criado:'06/05/2026'},
+  ],
+  stages: [
+    {id:1,nome:'Prospecção',cor:'#3b82f6',prob:15,tipo:'normal'},
+    {id:2,nome:'Qualificado',cor:'#8b5cf6',prob:35,tipo:'normal'},
+    {id:3,nome:'Proposta',cor:'#a855f7',prob:55,tipo:'normal'},
+    {id:4,nome:'Negociação',cor:'#f59e0b',prob:75,tipo:'normal'},
+    {id:5,nome:'Fechado',cor:'#22c55e',prob:100,tipo:'ganho'},
+  ],
+  editingUserId: null,
+  editingStageId: null,
+  selectedColor: '#3b82f6',
+};
+
+const authState = {
+  currentUser: null,
+  users: [
+    {id:1,nome:'Fabiano',sobrenome:'Aparecido',email:'gestorcomercial@glixquimica.com.br',senha:'glix2025',perfil:'admin'},
+    {id:2,nome:'Ana',sobrenome:'Silva',email:'ana.silva@glixquimica.com.br',senha:'ana123',perfil:'gestor'},
+    {id:3,nome:'Carlos',sobrenome:'Neto',email:'carlos.neto@glixquimica.com.br',senha:'carlos123',perfil:'vendedor'},
+  ]
+};
+
+let stageColors = {
+  'Prospecção':'#3b82f6','Qualificado':'#8b5cf6','Proposta':'#a855f7',
+  'Negociação':'#f59e0b','Fechado':'#22c55e'
+};
+
+// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────────────
+function navigate(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {
+    dashboard:'Dashboard', pipeline:'Pipeline de negócios', contacts:'Contatos',
+    companies:'Empresas', tasks:'Atividades', reports:'Relatórios', settings:'Configurações'
+  };
+  document.getElementById('page-title').textContent = titles[page] || page;
+  if (page === 'contacts') renderContacts();
+  if (page === 'pipeline') renderKanban();
+  if (page === 'companies') renderCompanies();
+  if (page === 'tasks') renderTasks();
+  if (page === 'reports') renderRevenueChart();
+  if (page === 'settings') { renderUsuarios(); renderStages(); }
+  closeSidebar();
 }
 
-// ── Contacts ─────────────────────────────────────────────────────────────────
-function initials(name){return name.split(' ').slice(0,2).map(n=>n[0]).join('')}
-function statusBadge(s){const m={ativo:'green',lead:'blue',inativo:'gray'};return`<span class="badge ${m[s]||'gray'}">${s}</span>`}
+// ── SIDEBAR MOBILE ────────────────────────────────────────────────────────────
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('visible');
+}
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  const ov = document.getElementById('sidebar-overlay');
+  if (ov) ov.classList.remove('visible');
+}
 
-function renderContacts(list){
-  list=list||state.contacts;
-  const tbody=document.getElementById('contacts-tbody');
-  document.getElementById('contacts-count').textContent=list.length+' contato'+(list.length!==1?'s':'');
-  tbody.innerHTML=list.map(c=>`
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const senha = document.getElementById('login-senha').value;
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+  if (!email || !senha) { errEl.textContent = 'Preencha e-mail e senha.'; errEl.classList.add('visible'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white;animation:spin 1s linear infinite"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6h2c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6H4c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg> Entrando...';
+  setTimeout(() => {
+    const user = authState.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
+    if (user) {
+      authState.currentUser = user;
+      errEl.classList.remove('visible');
+      document.querySelector('.user-name').textContent = user.nome + ' ' + (user.sobrenome || '');
+      document.querySelector('.user-role').textContent = {admin:'Administrador',gestor:'Gestor de Vendas',vendedor:'Vendedor',visualizador:'Visualizador'}[user.perfil] || user.perfil;
+      document.querySelector('.avatar').textContent = user.nome[0] + (user.sobrenome ? user.sobrenome[0] : '');
+      document.getElementById('login-screen').classList.add('hidden');
+      showToast('Bem-vindo, ' + user.nome + '! 👋');
+    } else {
+      errEl.textContent = 'E-mail ou senha incorretos.'; errEl.classList.add('visible');
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg> Entrar';
+    }
+  }, 600);
+}
+function toggleLoginSenha() {
+  const i = document.getElementById('login-senha');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+function logout() {
+  authState.currentUser = null;
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-senha').value = '';
+  document.getElementById('login-error').classList.remove('visible');
+  const btn = document.getElementById('login-btn');
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg> Entrar';
+}
+document.getElementById('login-email').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-senha').focus(); });
+document.getElementById('login-senha').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ── CADASTRO USUÁRIO (LOGIN) ──────────────────────────────────────────────────
+function openRegister() {
+  document.getElementById('register-screen').classList.add('visible');
+  applyPreset('vendedor', document.querySelector('.preset-btn.active'));
+}
+function closeRegister() { document.getElementById('register-screen').classList.remove('visible'); }
+
+const PRESETS = {
+  admin:       ['dash','relat','relat-export','kpi','cont-ver','cont-criar','cont-editar','cont-excluir','emp-ver','emp-criar','pipe-ver','pipe-criar','pipe-mover','pipe-todos','pipe-excluir','pipe-fechar','atv-ver','atv-criar','atv-todos','atv-excluir','config','usuarios','sankhya','pipeline-config','empresa','logs'],
+  gestor:      ['dash','relat','kpi','cont-ver','cont-criar','cont-editar','emp-ver','emp-criar','pipe-ver','pipe-criar','pipe-mover','pipe-todos','pipe-fechar','atv-ver','atv-criar','atv-todos','config'],
+  vendedor:    ['dash','cont-ver','cont-criar','cont-editar','emp-ver','pipe-ver','pipe-criar','pipe-mover','atv-ver','atv-criar'],
+  visualizador:['dash','cont-ver','emp-ver','pipe-ver','atv-ver'],
+  custom: []
+};
+const ALL_PERMS = ['dash','relat','relat-export','kpi','cont-ver','cont-criar','cont-editar','cont-excluir','emp-ver','emp-criar','pipe-ver','pipe-criar','pipe-mover','pipe-todos','pipe-excluir','pipe-fechar','atv-ver','atv-criar','atv-todos','atv-excluir','config','usuarios','sankhya','pipeline-config','empresa','logs'];
+
+function applyPreset(preset, btn) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (preset === 'custom') return;
+  const perms = PRESETS[preset] || [];
+  ALL_PERMS.forEach(p => { const el = document.getElementById('p-' + p); if (el) el.checked = perms.includes(p); });
+}
+function getSelectedPerms() {
+  const perms = {};
+  ALL_PERMS.forEach(p => { const el = document.getElementById('p-' + p); if (el && el.checked) perms[p] = true; });
+  return perms;
+}
+function saveNewUser() {
+  const nome = document.getElementById('reg-nome').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const senha = document.getElementById('reg-senha').value;
+  const senha2 = document.getElementById('reg-senha2').value;
+  if (!nome || !email) { alert('Nome e e-mail são obrigatórios.'); return; }
+  if (!senha || senha.length < 6) { alert('Senha deve ter no mínimo 6 caracteres.'); return; }
+  if (senha !== senha2) { alert('As senhas não conferem.'); return; }
+  if (authState.users.find(u => u.email.toLowerCase() === email.toLowerCase())) { alert('E-mail já cadastrado.'); return; }
+  const perfil = document.querySelector('.preset-btn.active')?.textContent?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'') || 'vendedor';
+  const perms = getSelectedPerms();
+  authState.users.push({ id: Date.now(), nome, sobrenome: document.getElementById('reg-sobrenome').value, email, senha, perfil, perms });
+  settingsState.usuarios.push({ id: Date.now(), nome, sobrenome: document.getElementById('reg-sobrenome').value, email, perfil, status: 'ativo', criado: new Date().toLocaleDateString('pt-BR') });
+  closeRegister();
+  showToast('Usuário ' + nome + ' criado com sucesso!');
+  if (document.getElementById('stab-usuarios')?.classList.contains('active')) renderUsuarios();
+}
+
+// ── BUSCA GLOBAL ──────────────────────────────────────────────────────────────
+function globalSearch(q) {
+  if (!q) { renderContacts(); return; }
+  const list = state.contacts.filter(c =>
+    c.name.toLowerCase().includes(q.toLowerCase()) ||
+    c.company.toLowerCase().includes(q.toLowerCase()) ||
+    c.email.toLowerCase().includes(q.toLowerCase())
+  );
+  if (document.getElementById('page-contacts').classList.contains('active')) renderContacts(list);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function initials(name) { return name.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
+function statusBadge(s) {
+  const m = {ativo:'green', lead:'blue', inativo:'gray'};
+  return `<span class="badge ${m[s]||'gray'}">${s}</span>`;
+}
+function fmtMoney(v) {
+  const n = parseInt(String(v).replace(/\D/g,'')) || 0;
+  return 'R$' + n.toLocaleString('pt-BR');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── MODAL PRINCIPAL ───────────────────────────────────────────────────────────
+const modalForms = {
+  contact: (data) => `
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Nome *</label><input class="form-input" id="f-name" placeholder="Nome completo" value="${data?data.name:''}"></div>
+      <div class="form-group"><label class="form-label">Cargo</label><input class="form-input" id="f-role" placeholder="CEO, Diretor..." value="${data?data.role:''}"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Empresa</label>
+      <select class="form-select" id="f-company">
+        <option value="">Selecionar empresa...</option>
+        ${state.companies.map(c=>`<option value="${c.name}" ${data&&data.company===c.name?'selected':''}>${c.name}</option>`).join('')}
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="f-email" type="email" placeholder="email@empresa.com" value="${data?data.email:''}"></div>
+      <div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="f-phone" placeholder="(11) 9 ..." value="${data?data.phone:''}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-select" id="f-status">
+          <option value="lead" ${data&&data.status==='lead'?'selected':''}>Lead</option>
+          <option value="ativo" ${data&&data.status==='ativo'?'selected':''}>Ativo</option>
+          <option value="inativo" ${data&&data.status==='inativo'?'selected':''}>Inativo</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Vendedor responsável</label>
+        <select class="form-select" id="f-owner">
+          <option ${data&&data.owner==='Ana Silva'?'selected':''}>Ana Silva</option>
+          <option ${data&&data.owner==='Carlos Neto'?'selected':''}>Carlos Neto</option>
+          <option ${data&&data.owner==='Mariana Rocha'?'selected':''}>Mariana Rocha</option>
+          <option ${data&&data.owner==='Pedro Alves'?'selected':''}>Pedro Alves</option>
+        </select>
+      </div>
+    </div>`,
+
+  deal: (stage) => `
+    <div class="form-group"><label class="form-label">Nome do negócio *</label><input class="form-input" id="f-deal-name" placeholder="Ex: CRM Enterprise"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Empresa</label>
+        <select class="form-select" id="f-deal-company">
+          <option value="">Selecionar...</option>
+          ${state.companies.map(c=>`<option>${c.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Estágio</label>
+        <select class="form-select" id="f-deal-stage">
+          ${Object.keys(state.deals).map(s=>`<option ${s===stage?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Valor (R$)</label><input class="form-input" id="f-deal-value" type="number" placeholder="50000"></div>
+      <div class="form-group"><label class="form-label">Probabilidade (%)</label><input class="form-input" id="f-deal-prob" type="number" min="0" max="100" placeholder="50"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Responsável</label>
+      <select class="form-select" id="f-deal-owner">
+        <option value="AS">Ana Silva</option><option value="CN">Carlos Neto</option>
+        <option value="MR">Mariana Rocha</option><option value="PA">Pedro Alves</option>
+      </select>
+    </div>`,
+
+  task: () => `
+    <div class="form-group"><label class="form-label">Título da atividade *</label><input class="form-input" id="f-task-title" placeholder="O que precisa ser feito?"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Tipo</label>
+        <select class="form-select" id="f-task-tag">
+          <option>Ligação</option><option>E-mail</option><option>Reunião</option>
+          <option>Proposta</option><option>Demo</option><option>Follow-up</option><option>Interno</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Prioridade</label>
+        <select class="form-select" id="f-task-priority">
+          <option value="high">Alta</option><option value="med" selected>Média</option><option value="low">Baixa</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Contato relacionado</label>
+        <select class="form-select" id="f-task-contact">
+          <option value="">Nenhum</option>
+          ${state.contacts.map(c=>`<option>${c.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Prazo</label>
+        <input class="form-input" id="f-task-due" type="date" value="${new Date().toISOString().split('T')[0]}">
+      </div>
+    </div>`,
+
+  company: (data) => `
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Nome da empresa *</label><input class="form-input" id="f-co-name" placeholder="Razão social" value="${data?data.name:''}"></div>
+      <div class="form-group"><label class="form-label">CNPJ</label><input class="form-input" id="f-co-cnpj" placeholder="00.000.000/0001-00" value="${data?data.cnpj||'':''}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Segmento</label>
+        <select class="form-select" id="f-co-seg">
+          ${['Tecnologia','Indústria Química','Indústria Saneantes','Serviços','Varejo','Outro'].map(s=>`<option ${data&&data.segment===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Porte</label>
+        <select class="form-select" id="f-co-size">
+          ${['Pequena','Média','Grande'].map(s=>`<option ${data&&data.size===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Cidade/UF</label><input class="form-input" id="f-co-city" placeholder="São Paulo/SP" value="${data?data.city:''}"></div>
+      <div class="form-group"><label class="form-label">Site</label><input class="form-input" id="f-co-site" placeholder="www.empresa.com.br" value="${data?data.site||'':''}"></div>
+    </div>`,
+};
+
+const modalTitles = { contact:'Novo contato', deal:'Novo negócio', task:'Nova atividade', company:'Nova empresa' };
+
+function openModal(type, data) {
+  state.modalType = type;
+  state.editingContactId = null;
+  state.editingCompanyId = null;
+  const title = document.getElementById('modal-title');
+  const body = document.getElementById('modal-body');
+  if (type === 'contact' && data && data.id) {
+    state.editingContactId = data.id;
+    title.textContent = 'Editar contato';
+    body.innerHTML = modalForms.contact(data);
+  } else if (type === 'company' && data && data.id) {
+    state.editingCompanyId = data.id;
+    title.textContent = 'Editar empresa';
+    body.innerHTML = modalForms.company(data);
+  } else if (type === 'deal' && typeof data === 'string') {
+    title.textContent = 'Novo negócio';
+    body.innerHTML = modalForms.deal(data);
+  } else {
+    title.textContent = modalTitles[type] || 'Novo';
+    body.innerHTML = modalForms[type] ? modalForms[type](null) : '';
+  }
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  // Focar primeiro input
+  setTimeout(() => { const fi = body.querySelector('input, select'); if (fi) fi.focus(); }, 100);
+}
+function closeModal() { document.getElementById('modal-overlay').classList.add('hidden'); }
+function closeModalOutside(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
+
+function saveModal() {
+  const type = state.modalType;
+
+  if (type === 'contact') {
+    const name = document.getElementById('f-name').value.trim();
+    if (!name) { alert('Informe o nome do contato.'); return; }
+    if (state.editingContactId) {
+      const c = state.contacts.find(x => x.id === state.editingContactId);
+      if (c) {
+        c.name = name;
+        c.role = document.getElementById('f-role').value;
+        c.company = document.getElementById('f-company').value;
+        c.email = document.getElementById('f-email').value;
+        c.phone = document.getElementById('f-phone').value;
+        c.status = document.getElementById('f-status').value;
+        c.owner = document.getElementById('f-owner').value;
+      }
+      showToast('Contato atualizado!');
+    } else {
+      state.contacts.push({
+        id: Date.now(), name,
+        role: document.getElementById('f-role').value,
+        company: document.getElementById('f-company').value,
+        email: document.getElementById('f-email').value,
+        phone: document.getElementById('f-phone').value,
+        status: document.getElementById('f-status').value,
+        owner: document.getElementById('f-owner').value,
+        color: state.contacts.length % avatarColors.length,
+      });
+      showToast('Contato criado com sucesso!');
+    }
+    closeModal();
+    if (document.getElementById('page-contacts').classList.contains('active')) renderContacts();
+
+  } else if (type === 'deal') {
+    const name = document.getElementById('f-deal-name').value.trim();
+    if (!name) { alert('Informe o nome do negócio.'); return; }
+    const stage = document.getElementById('f-deal-stage').value;
+    const val = parseInt(document.getElementById('f-deal-value').value) || 0;
+    const prob = parseInt(document.getElementById('f-deal-prob').value) || 0;
+    const ownerColors = {AS:'#3b82f6', CN:'#22c55e', MR:'#a855f7', PA:'#f59e0b'};
+    const owner = document.getElementById('f-deal-owner').value;
+    if (!state.deals[stage]) state.deals[stage] = [];
+    state.deals[stage].push({
+      id: Date.now(), name,
+      company: document.getElementById('f-deal-company').value,
+      value: 'R$' + val.toLocaleString('pt-BR'),
+      prob: prob + '%',
+      owner, ownerColor: ownerColors[owner] || '#3b82f6',
+      date: new Date().toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'})
+    });
+    closeModal();
+    renderKanban();
+    showToast('Negócio criado!');
+
+  } else if (type === 'task') {
+    const title = document.getElementById('f-task-title').value.trim();
+    if (!title) { alert('Informe o título da atividade.'); return; }
+    const due = document.getElementById('f-task-due').value;
+    const dueFormatted = due ? new Date(due + 'T12:00:00').toLocaleDateString('pt-BR', {day:'2-digit', month:'short'}) : '-';
+    state.tasks.unshift({
+      id: Date.now(), title, done: false,
+      priority: document.getElementById('f-task-priority').value,
+      contact: document.getElementById('f-task-contact').value,
+      due: dueFormatted,
+      tag: document.getElementById('f-task-tag').value,
+    });
+    closeModal();
+    if (document.getElementById('page-tasks').classList.contains('active')) renderTasks();
+    showToast('Atividade criada!');
+
+  } else if (type === 'company') {
+    const name = document.getElementById('f-co-name').value.trim();
+    if (!name) { alert('Informe o nome da empresa.'); return; }
+    const colors = ['#3b82f6','#22c55e','#a855f7','#f59e0b','#ef4444','#06b6d4'];
+    if (state.editingCompanyId) {
+      const c = state.companies.find(x => x.id === state.editingCompanyId);
+      if (c) {
+        c.name = name;
+        c.segment = document.getElementById('f-co-seg').value;
+        c.size = document.getElementById('f-co-size').value;
+        c.city = document.getElementById('f-co-city').value;
+        c.site = document.getElementById('f-co-site').value;
+      }
+      showToast('Empresa atualizada!');
+    } else {
+      state.companies.push({
+        id: Date.now(), name, cnpj: document.getElementById('f-co-cnpj').value,
+        segment: document.getElementById('f-co-seg').value,
+        size: document.getElementById('f-co-size').value,
+        city: document.getElementById('f-co-city').value,
+        site: document.getElementById('f-co-site').value,
+        contacts: 0, deals: 0, revenue: 'R$0',
+        color: colors[state.companies.length % colors.length],
+      });
+      showToast('Empresa criada!');
+    }
+    closeModal();
+    if (document.getElementById('page-companies').classList.contains('active')) renderCompanies();
+  }
+}
+
+// ── CONTATOS ──────────────────────────────────────────────────────────────────
+function renderContacts(list) {
+  list = list || state.contacts;
+  const tbody = document.getElementById('contacts-tbody');
+  const countEl = document.getElementById('contacts-count');
+  if (countEl) countEl.textContent = list.length + ' contato' + (list.length !== 1 ? 's' : '');
+  tbody.innerHTML = list.map(c => `
     <tr>
       <td><div class="contact-cell">
-        <div class="contact-avatar" style="background:${avatarColors[c.color%avatarColors.length]}">${initials(c.name)}</div>
+        <div class="contact-avatar" style="background:${avatarColors[c.color % avatarColors.length]}">${initials(c.name)}</div>
         <div><div class="contact-name">${c.name}</div></div>
       </div></td>
-      <td style="color:var(--text2)">${c.company}</td>
-      <td style="color:var(--text2)">${c.role}</td>
-      <td style="color:var(--accent)">${c.email}</td>
-      <td style="color:var(--text2)">${c.phone}</td>
+      <td style="color:var(--text2)">${c.company || '—'}</td>
+      <td style="color:var(--text2)">${c.role || '—'}</td>
+      <td style="color:var(--accent)">${c.email || '—'}</td>
+      <td style="color:var(--text2)">${c.phone || '—'}</td>
       <td>${statusBadge(c.status)}</td>
-      <td style="color:var(--text2)">${c.owner}</td>
+      <td style="color:var(--text2)">${c.owner || '—'}</td>
       <td>
         <div style="display:flex;gap:6px">
-          <button class="action-btn" title="Editar" onclick="editContact(${c.id})"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
-          <button class="action-btn" title="Excluir" onclick="deleteContact(${c.id})" style="color:var(--red)"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+          <button class="action-btn" title="Editar" onclick="editContact(${c.id})">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="action-btn" title="Excluir" onclick="deleteContact(${c.id})" style="color:var(--red)">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
         </div>
       </td>
-    </tr>
-  `).join('')||'<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">Nenhum contato encontrado.</td></tr>';
+    </tr>`).join('') || '<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">Nenhum contato encontrado.</td></tr>';
 }
 
-function filterContacts(){
-  const status=document.getElementById('filter-status').value;
-  const owner=document.getElementById('filter-owner').value;
-  let list=state.contacts;
-  if(status)list=list.filter(c=>c.status===status);
-  if(owner)list=list.filter(c=>c.owner===owner);
-  renderContacts(list);
+function editContact(id) {
+  const c = state.contacts.find(x => x.id === id);
+  if (c) openModal('contact', c);
 }
-
-function deleteContact(id){
-  state.contacts=state.contacts.filter(c=>c.id!==id);
+function deleteContact(id) {
+  if (!confirm('Remover este contato?')) return;
+  state.contacts = state.contacts.filter(c => c.id !== id);
   renderContacts();
   showToast('Contato removido.');
 }
-
-function editContact(id){
-  const c=state.contacts.find(x=>x.id===id);
-  if(!c)return;
-  openModal('contact',c);
+function filterContacts() {
+  const status = document.getElementById('filter-status').value;
+  const owner = document.getElementById('filter-owner').value;
+  let list = state.contacts;
+  if (status) list = list.filter(c => c.status === status);
+  if (owner) list = list.filter(c => c.owner === owner);
+  renderContacts(list);
 }
 
-function globalSearch(q){
-  if(!q)return;
-  const list=state.contacts.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())||c.company.toLowerCase().includes(q.toLowerCase()));
-  if(document.getElementById('page-contacts').classList.contains('active'))renderContacts(list);
-}
-
-// ── Companies ────────────────────────────────────────────────────────────────
-function renderCompanies(){
-  const grid=document.getElementById('companies-grid');
-  grid.innerHTML=state.companies.map(c=>`
+// ── EMPRESAS ──────────────────────────────────────────────────────────────────
+function renderCompanies() {
+  const grid = document.getElementById('companies-grid');
+  if (!grid) return;
+  grid.innerHTML = state.companies.map(c => `
     <div class="card" style="cursor:pointer;transition:.2s" onmouseenter="this.style.borderColor='var(--border2)'" onmouseleave="this.style.borderColor='var(--border)'">
       <div class="card-body">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <div style="width:42px;height:42px;border-radius:10px;background:${c.color}22;border:1px solid ${c.color}44;display:flex;align-items:center;justify-content:center;font-family:var(--font2);font-size:14px;font-weight:700;color:${c.color}">${c.name.slice(0,2).toUpperCase()}</div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text)">${c.name}</div>
-            <div style="font-size:11px;color:var(--text3)">${c.city}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:42px;height:42px;border-radius:10px;background:${c.color}22;border:1px solid ${c.color}44;display:flex;align-items:center;justify-content:center;font-family:var(--font2);font-size:14px;font-weight:700;color:${c.color}">${c.name.slice(0,2).toUpperCase()}</div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--text)">${c.name}</div>
+              <div style="font-size:11px;color:var(--text3)">${c.city || '—'}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="action-btn" onclick="editCompany(${c.id})" title="Editar">
+              <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </button>
+            <button class="action-btn" onclick="deleteCompany(${c.id})" title="Excluir" style="color:var(--red)">
+              <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+            </button>
           </div>
         </div>
         <div style="display:flex;gap:6px;margin-bottom:14px">
@@ -1394,40 +1823,48 @@ function renderCompanies(){
           </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
+}
+function editCompany(id) {
+  const c = state.companies.find(x => x.id === id);
+  if (c) openModal('company', c);
+}
+function deleteCompany(id) {
+  if (!confirm('Remover esta empresa?')) return;
+  state.companies = state.companies.filter(c => c.id !== id);
+  renderCompanies();
+  showToast('Empresa removida.');
 }
 
-// ── Pipeline Kanban ──────────────────────────────────────────────────────────
-const stageColors={'Prospecção':'#3b82f6','Qualificado':'#8b5cf6','Proposta':'#a855f7','Negociação':'#f59e0b','Fechado':'#22c55e'};
-
-function renderKanban(){
-  const board=document.getElementById('kanban-board');
-  board.innerHTML=Object.entries(state.deals).map(([stage,deals])=>`
+// ── PIPELINE KANBAN ───────────────────────────────────────────────────────────
+function renderKanban() {
+  const board = document.getElementById('kanban-board');
+  if (!board) return;
+  board.innerHTML = Object.entries(state.deals).map(([stage, deals]) => `
     <div class="kanban-col">
       <div class="kanban-header">
         <div class="kanban-title">
-          <div style="width:8px;height:8px;border-radius:50%;background:${stageColors[stage]}"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:${stageColors[stage]||'#3b82f6'}"></div>
           ${stage}
           <span class="kanban-count">${deals.length}</span>
         </div>
       </div>
       <div class="kanban-cards" data-stage="${stage}" ondragover="dragOver(event)" ondrop="drop(event,'${stage}')">
-        ${deals.map(d=>dealCard(d,stage)).join('')}
+        ${deals.map(d => dealCard(d, stage)).join('')}
       </div>
       <button class="add-deal-btn" onclick="openModal('deal','${stage}')">+ Adicionar negócio</button>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
-function dealCard(d,stage){
-  return`<div class="deal-card" draggable="true" data-id="${d.id}" data-stage="${stage}" ondragstart="dragStart(event,${d.id},'${stage}')" ondragend="dragEnd(event)">
-    <div class="deal-name">${d.name}</div>
-    <div class="deal-company">${d.company}</div>
-    <div class="deal-meta">
-      <div class="deal-value">${d.value}</div>
-      <div class="deal-prob">${d.prob}</div>
+function dealCard(d, stage) {
+  return `<div class="deal-card" draggable="true" data-id="${d.id}" data-stage="${stage}" ondragstart="dragStart(event,${d.id},'${stage}')" ondragend="dragEnd(event)">
+    <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:4px">
+      <div class="deal-name">${d.name}</div>
+      <button onclick="deleteDeal(${d.id},'${stage}')" style="background:none;border:none;cursor:pointer;color:var(--text3);padding:0 0 0 6px;line-height:1" title="Remover">
+        <svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
     </div>
+    <div class="deal-company">${d.company}</div>
+    <div class="deal-meta"><div class="deal-value">${d.value}</div><div class="deal-prob">${d.prob}</div></div>
     <div class="deal-footer">
       <div class="deal-owner">
         <div class="mini-avatar" style="background:${d.ownerColor}">${d.owner}</div>
@@ -1437,33 +1874,42 @@ function dealCard(d,stage){
     </div>
   </div>`;
 }
-
-function dragStart(e,id,stage){state.dragId=id;state.dragStage=stage;e.currentTarget.classList.add('dragging')}
-function dragEnd(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.deal-card').forEach(c=>c.classList.remove('drag-over'))}
-function dragOver(e){e.preventDefault();const card=e.target.closest('.deal-card');if(card)card.classList.add('drag-over')}
-function drop(e,toStage){
+function deleteDeal(id, stage) {
+  if (!confirm('Remover este negócio?')) return;
+  state.deals[stage] = state.deals[stage].filter(d => d.id !== id);
+  renderKanban();
+  showToast('Negócio removido.');
+}
+function dragStart(e, id, stage) { state.dragId = id; state.dragStage = stage; e.currentTarget.classList.add('dragging'); }
+function dragEnd(e) { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.deal-card').forEach(c => c.classList.remove('drag-over')); }
+function dragOver(e) { e.preventDefault(); const c = e.target.closest('.deal-card'); if (c) c.classList.add('drag-over'); }
+function drop(e, toStage) {
   e.preventDefault();
-  document.querySelectorAll('.deal-card').forEach(c=>c.classList.remove('drag-over'));
-  if(!state.dragId||!state.dragStage||state.dragStage===toStage)return;
-  const fromDeals=state.deals[state.dragStage];
-  const idx=fromDeals.findIndex(d=>d.id===state.dragId);
-  if(idx===-1)return;
-  const [deal]=fromDeals.splice(idx,1);
+  document.querySelectorAll('.deal-card').forEach(c => c.classList.remove('drag-over'));
+  if (!state.dragId || !state.dragStage || state.dragStage === toStage) return;
+  const fromDeals = state.deals[state.dragStage];
+  const idx = fromDeals.findIndex(d => d.id === state.dragId);
+  if (idx === -1) return;
+  const [deal] = fromDeals.splice(idx, 1);
+  if (!state.deals[toStage]) state.deals[toStage] = [];
   state.deals[toStage].push(deal);
-  state.dragId=null;state.dragStage=null;
+  state.dragId = null; state.dragStage = null;
   renderKanban();
   showToast(`Negócio movido para "${toStage}"`);
 }
 
-// ── Tasks ────────────────────────────────────────────────────────────────────
-const priorityLabel={high:'Alta',med:'Média',low:'Baixa'};
-function renderTasks(filter){
-  filter=filter||'all';
-  let list=state.tasks;
-  if(filter==='pending')list=list.filter(t=>!t.done);
-  if(filter==='done')list=list.filter(t=>t.done);
-  const container=document.getElementById('tasks-list');
-  container.innerHTML=list.map(t=>`
+// ── ATIVIDADES ────────────────────────────────────────────────────────────────
+const priorityLabel = {high:'Alta', med:'Média', low:'Baixa'};
+let currentTaskFilter = 'all';
+
+function renderTasks(filter) {
+  if (filter !== undefined) currentTaskFilter = filter;
+  let list = state.tasks;
+  if (currentTaskFilter === 'pending') list = list.filter(t => !t.done);
+  if (currentTaskFilter === 'done') list = list.filter(t => t.done);
+  const container = document.getElementById('tasks-list');
+  if (!container) return;
+  container.innerHTML = list.map(t => `
     <div class="task-item" id="task-${t.id}">
       <div class="task-check ${t.done?'done':''}" onclick="toggleTask(${t.id})">
         <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
@@ -1473,273 +1919,80 @@ function renderTasks(filter){
         <div class="task-meta">
           <span class="task-priority ${t.priority}"></span>${priorityLabel[t.priority]}
           <span>·</span><span>${t.due}</span>
-          ${t.contact?`<span>·</span><span style="color:var(--accent)">${t.contact}</span>`:''}
+          ${t.contact ? `<span>·</span><span style="color:var(--accent)">${t.contact}</span>` : ''}
           <span class="task-tag">${t.tag}</span>
         </div>
       </div>
-      <button class="action-btn" onclick="deleteTask(${t.id})" style="color:var(--red);margin-top:2px"><svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
-    </div>
-  `).join('')||'<div class="empty">Nenhuma atividade.</div>';
+      <button class="action-btn" onclick="deleteTask(${t.id})" style="color:var(--red);margin-top:2px">
+        <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      </button>
+    </div>`).join('') || '<div class="empty">Nenhuma atividade encontrada.</div>';
 }
 
-function toggleTask(id){
-  const t=state.tasks.find(x=>x.id===id);
-  if(t){t.done=!t.done;renderTasks();showToast(t.done?'Atividade concluída!':'Atividade reaberta.');}
+function toggleTask(id) {
+  const t = state.tasks.find(x => x.id === id);
+  if (t) { t.done = !t.done; renderTasks(); showToast(t.done ? 'Atividade concluída!' : 'Atividade reaberta.'); }
 }
-function deleteTask(id){state.tasks=state.tasks.filter(t=>t.id!==id);renderTasks();showToast('Atividade removida.');}
-function filterTasks(f,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
+function deleteTask(id) {
+  if (!confirm('Remover esta atividade?')) return;
+  state.tasks = state.tasks.filter(t => t.id !== id);
+  renderTasks();
+  showToast('Atividade removida.');
+}
+function filterTasks(f, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
   renderTasks(f);
 }
 
-// ── Reports ──────────────────────────────────────────────────────────────────
-function renderRevenueChart(){
-  const months=['Jan','Fev','Mar','Abr','Mai','Jun'];
-  const vals=[180,210,195,280,310,347];
-  const max=Math.max(...vals);
-  const chart=document.getElementById('revenue-chart');
-  if(!chart)return;
-  chart.innerHTML=vals.map((v,i)=>`
+// ── RELATÓRIOS ────────────────────────────────────────────────────────────────
+function renderRevenueChart() {
+  const months = ['Jan','Fev','Mar','Abr','Mai','Jun'];
+  const vals = [180, 210, 195, 280, 310, 347];
+  const max = Math.max(...vals);
+  const chart = document.getElementById('revenue-chart');
+  if (!chart) return;
+  chart.innerHTML = vals.map((v, i) => `
     <div class="bar-wrap">
-      <div class="bar" data-val="R$${v}K" style="height:${(v/max)*100}%;background:${i===vals.length-1?'var(--accent)':'var(--accent)66'}"></div>
+      <div class="bar" data-val="R$${v}K" style="height:${(v/max)*100}%;background:${i===vals.length-1?'var(--accent)':'var(--accent)66'}" title="R$${v}K"></div>
       <div class="bar-label">${months[i]}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-// ── Modal ────────────────────────────────────────────────────────────────────
-const modalForms={
-  contact:(data)=>`
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Nome *</label><input class="form-input" id="f-name" placeholder="Nome completo" value="${data?data.name:''}"></div>
-      <div class="form-group"><label class="form-label">Cargo</label><input class="form-input" id="f-role" placeholder="CEO, Diretor..." value="${data?data.role:''}"></div>
-    </div>
-    <div class="form-group"><label class="form-label">Empresa</label><select class="form-select" id="f-company"><option value="">Selecionar empresa...</option>${state.companies.map(c=>`<option value="${c.name}" ${data&&data.company===c.name?'selected':''}>${c.name}</option>`).join('')}</select></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="f-email" type="email" placeholder="email@empresa.com" value="${data?data.email:''}"></div>
-      <div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="f-phone" placeholder="(11) 9 ..." value="${data?data.phone:''}"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="f-status"><option value="lead" ${data&&data.status==='lead'?'selected':''}>Lead</option><option value="ativo" ${data&&data.status==='ativo'?'selected':''}>Ativo</option><option value="inativo" ${data&&data.status==='inativo'?'selected':''}>Inativo</option></select></div>
-      <div class="form-group"><label class="form-label">Vendedor responsável</label><select class="form-select" id="f-owner"><option ${data&&data.owner==='Ana Silva'?'selected':''}>Ana Silva</option><option ${data&&data.owner==='Carlos Neto'?'selected':''}>Carlos Neto</option><option ${data&&data.owner==='Mariana Rocha'?'selected':''}>Mariana Rocha</option><option ${data&&data.owner==='Pedro Alves'?'selected':''}>Pedro Alves</option></select></div>
-    </div>`,
-  deal:(stage)=>`
-    <div class="form-group"><label class="form-label">Nome do negócio *</label><input class="form-input" id="f-deal-name" placeholder="Ex: CRM Enterprise"></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Empresa</label><select class="form-select" id="f-deal-company"><option value="">Selecionar...</option>${state.companies.map(c=>`<option>${c.name}</option>`).join('')}</select></div>
-      <div class="form-group"><label class="form-label">Estágio</label><select class="form-select" id="f-deal-stage">${Object.keys(state.deals).map(s=>`<option ${s===stage?'selected':''}>${s}</option>`).join('')}</select></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Valor (R$)</label><input class="form-input" id="f-deal-value" type="number" placeholder="50000"></div>
-      <div class="form-group"><label class="form-label">Probabilidade (%)</label><input class="form-input" id="f-deal-prob" type="number" min="0" max="100" placeholder="50"></div>
-    </div>
-    <div class="form-group"><label class="form-label">Responsável</label><select class="form-select" id="f-deal-owner"><option value="AS">Ana Silva</option><option value="CN">Carlos Neto</option><option value="MR">Mariana Rocha</option><option value="PA">Pedro Alves</option></select></div>`,
-  task:()=>`
-    <div class="form-group"><label class="form-label">Título da atividade *</label><input class="form-input" id="f-task-title" placeholder="O que precisa ser feito?"></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Tipo</label><select class="form-select" id="f-task-tag"><option>Ligação</option><option>E-mail</option><option>Reunião</option><option>Proposta</option><option>Demo</option><option>Follow-up</option><option>Interno</option></select></div>
-      <div class="form-group"><label class="form-label">Prioridade</label><select class="form-select" id="f-task-priority"><option value="high">Alta</option><option value="med" selected>Média</option><option value="low">Baixa</option></select></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Contato relacionado</label><select class="form-select" id="f-task-contact"><option value="">Nenhum</option>${state.contacts.map(c=>`<option>${c.name}</option>`).join('')}</select></div>
-      <div class="form-group"><label class="form-label">Prazo</label><input class="form-input" id="f-task-due" type="date" value="${new Date().toISOString().split('T')[0]}"></div>
-    </div>`,
-  company:()=>`
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Nome da empresa *</label><input class="form-input" id="f-co-name" placeholder="Razão social"></div>
-      <div class="form-group"><label class="form-label">CNPJ</label><input class="form-input" id="f-co-cnpj" placeholder="00.000.000/0001-00"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Segmento</label><select class="form-select" id="f-co-seg"><option>Tecnologia</option><option>Indústria</option><option>Serviços</option><option>Varejo</option></select></div>
-      <div class="form-group"><label class="form-label">Porte</label><select class="form-select" id="f-co-size"><option>Pequena</option><option>Média</option><option>Grande</option></select></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Cidade/UF</label><input class="form-input" id="f-co-city" placeholder="São Paulo/SP"></div>
-      <div class="form-group"><label class="form-label">Site</label><input class="form-input" id="f-co-site" placeholder="www.empresa.com.br"></div>
-    </div>`,
-};
-
-const modalTitles={contact:'Novo contato',deal:'Novo negócio',task:'Nova atividade',company:'Nova empresa'};
-let editingContactId=null;
-
-function openModal(type,data){
-  state.modalType=type;
-  editingContactId=null;
-  const overlay=document.getElementById('modal-overlay');
-  const title=document.getElementById('modal-title');
-  const body=document.getElementById('modal-body');
-  
-  if(type==='contact'&&data&&data.id){
-    editingContactId=data.id;
-    title.textContent='Editar contato';
-    body.innerHTML=modalForms.contact(data);
-  } else {
-    title.textContent=modalTitles[type]||'Novo';
-    body.innerHTML=(modalForms[type]?(typeof data==='string'?modalForms[type](data):modalForms[type](data||null)):'');
-  }
-  overlay.classList.remove('hidden');
-}
-
-function closeModal(){document.getElementById('modal-overlay').classList.add('hidden')}
-function closeModalOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal()}
-
-function saveModal(){
-  const type=state.modalType;
-  if(type==='contact'){
-    const name=document.getElementById('f-name').value.trim();
-    if(!name){alert('Informe o nome do contato.');return;}
-    if(editingContactId){
-      const c=state.contacts.find(x=>x.id===editingContactId);
-      if(c){
-        c.name=name;c.role=document.getElementById('f-role').value;
-        c.company=document.getElementById('f-company').value;c.email=document.getElementById('f-email').value;
-        c.phone=document.getElementById('f-phone').value;c.status=document.getElementById('f-status').value;
-        c.owner=document.getElementById('f-owner').value;
-      }
-      showToast('Contato atualizado!');
-    } else {
-      const newContact={
-        id:Date.now(),name,role:document.getElementById('f-role').value,
-        company:document.getElementById('f-company').value,email:document.getElementById('f-email').value,
-        phone:document.getElementById('f-phone').value,status:document.getElementById('f-status').value,
-        owner:document.getElementById('f-owner').value,color:state.contacts.length%avatarColors.length
-      };
-      state.contacts.push(newContact);
-      showToast('Contato criado com sucesso!');
-    }
-    if(document.getElementById('page-contacts').classList.contains('active'))renderContacts();
-  } else if(type==='deal'){
-    const name=document.getElementById('f-deal-name').value.trim();
-    if(!name){alert('Informe o nome do negócio.');return;}
-    const stage=document.getElementById('f-deal-stage').value;
-    const val=parseInt(document.getElementById('f-deal-value').value)||0;
-    const prob=parseInt(document.getElementById('f-deal-prob').value)||0;
-    const ownerMap={AS:'#3b82f6',CN:'#22c55e',MR:'#a855f7',PA:'#f59e0b'};
-    const owner=document.getElementById('f-deal-owner').value;
-    state.deals[stage].push({
-      id:Date.now(),name,company:document.getElementById('f-deal-company').value,
-      value:`R$${val.toLocaleString('pt-BR')}`,prob:`${prob}%`,
-      owner,ownerColor:ownerMap[owner]||'#3b82f6',date:new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})
-    });
-    renderKanban();
-    showToast('Negócio criado!');
-  } else if(type==='task'){
-    const title=document.getElementById('f-task-title').value.trim();
-    if(!title){alert('Informe o título da atividade.');return;}
-    const due=document.getElementById('f-task-due').value;
-    const dueFormatted=due?new Date(due+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}):'-';
-    state.tasks.unshift({
-      id:Date.now(),title,done:false,
-      priority:document.getElementById('f-task-priority').value,
-      contact:document.getElementById('f-task-contact').value,
-      due:dueFormatted,tag:document.getElementById('f-task-tag').value
-    });
-    if(document.getElementById('page-tasks').classList.contains('active'))renderTasks();
-    showToast('Atividade criada!');
-  } else if(type==='company'){
-    const name=document.getElementById('f-co-name').value.trim();
-    if(!name){alert('Informe o nome da empresa.');return;}
-    state.companies.push({
-      id:Date.now(),name,
-      segment:document.getElementById('f-co-seg').value,
-      size:document.getElementById('f-co-size').value,
-      city:document.getElementById('f-co-city').value||'—',
-      contacts:0,deals:0,revenue:'R$0',
-      color:colors[state.companies.length%colors.length]
-    });
-    if(document.getElementById('page-companies').classList.contains('active'))renderCompanies();
-    showToast('Empresa criada!');
-  }
-  closeModal();
-}
-
-// ── Toast ────────────────────────────────────────────────────────────────────
-let toastTimer;
-function showToast(msg){
-  clearTimeout(toastTimer);
-  const t=document.getElementById('toast');
-  document.getElementById('toast-msg').textContent=msg;
-  t.classList.add('show');
-  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
-}
-
-// ── Init ─────────────────────────────────────────────────────────────────────
-renderContacts();
-renderCompanies();
-renderTasks();
-setTimeout(renderRevenueChart,100);
-
-// ── SETTINGS CRUD ────────────────────────────────────────────────────────────
-
-// Estado das configurações
-const settingsState = {
-  usuarios: [
-    {id:1, nome:'João', sobrenome:'Martins', email:'joao.martins@glixquimica.com.br', perfil:'admin', status:'ativo', criado:'06/05/2025'},
-    {id:2, nome:'Ana', sobrenome:'Silva', email:'ana.silva@glixquimica.com.br', perfil:'gestor', status:'ativo', criado:'06/05/2025'},
-    {id:3, nome:'Carlos', sobrenome:'Neto', email:'carlos.neto@glixquimica.com.br', perfil:'vendedor', status:'ativo', criado:'06/05/2025'},
-    {id:4, nome:'Mariana', sobrenome:'Rocha', email:'mariana.rocha@glixquimica.com.br', perfil:'vendedor', status:'ativo', criado:'06/05/2025'},
-  ],
-  stages: [
-    {id:1, nome:'Prospecção', cor:'#3b82f6', prob:15, tipo:'normal'},
-    {id:2, nome:'Qualificado', cor:'#8b5cf6', prob:35, tipo:'normal'},
-    {id:3, nome:'Proposta', cor:'#a855f7', prob:55, tipo:'normal'},
-    {id:4, nome:'Negociação', cor:'#f59e0b', prob:75, tipo:'normal'},
-    {id:5, nome:'Fechado', cor:'#22c55e', prob:100, tipo:'ganho'},
-  ],
-  editingUserId: null,
-  editingStageId: null,
-  selectedColor: '#3b82f6',
-};
-
-// ── Tabs de configurações ────────────────────────────────────────────────────
+// ── CONFIGURAÇÕES — TABS ──────────────────────────────────────────────────────
 function showSettingsTab(tab, el) {
   document.querySelectorAll('.stab').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('stab-' + tab).classList.add('active');
-  el.classList.add('active');
+  const target = document.getElementById('stab-' + tab);
+  if (target) target.classList.add('active');
+  if (el) el.classList.add('active');
   if (tab === 'usuarios') renderUsuarios();
   if (tab === 'pipeline') renderStages();
 }
 
-// ── Empresa ─────────────────────────────────────────────────────────────────
+// ── CONFIGURAÇÕES — EMPRESA ───────────────────────────────────────────────────
 function saveEmpresa() {
-  const razao = document.getElementById('emp-razao').value.trim();
+  const razao = document.getElementById('emp-razao')?.value.trim();
   if (!razao) { alert('Informe a razão social.'); return; }
   showToast('Dados da empresa salvos com sucesso!');
 }
 
-// ── Usuários ─────────────────────────────────────────────────────────────────
-const avatarGradients = [
-  'linear-gradient(135deg,#3b82f6,#8b5cf6)',
-  'linear-gradient(135deg,#22c55e,#3b82f6)',
-  'linear-gradient(135deg,#f59e0b,#ef4444)',
-  'linear-gradient(135deg,#a855f7,#ec4899)',
-  'linear-gradient(135deg,#06b6d4,#22c55e)',
-];
-
+// ── CONFIGURAÇÕES — USUÁRIOS ──────────────────────────────────────────────────
 const perfilLabels = {admin:'Administrador', gestor:'Gestor', vendedor:'Vendedor', visualizador:'Visualizador'};
-const perfilClass  = {admin:'admin', gestor:'gestor', vendedor:'vendedor', visualizador:'visualizador'};
 
 function renderUsuarios() {
   const tbody = document.getElementById('usuarios-tbody');
+  if (!tbody) return;
   const badge = document.getElementById('badge-usuarios');
   if (badge) badge.textContent = settingsState.usuarios.filter(u => u.status === 'ativo').length;
-
   tbody.innerHTML = settingsState.usuarios.map((u, i) => `
     <tr>
-      <td>
-        <div class="contact-cell">
-          <div class="user-avatar-sm" style="background:${avatarGradients[i % avatarGradients.length]}">
-            ${u.nome[0]}${u.sobrenome?u.sobrenome[0]:''}
-          </div>
-          <div>
-            <div class="contact-name">${u.nome} ${u.sobrenome||''}</div>
-          </div>
-        </div>
-      </td>
+      <td><div class="contact-cell">
+        <div class="user-avatar-sm" style="background:${avatarColors[i % avatarColors.length]}">${u.nome[0]}${u.sobrenome?u.sobrenome[0]:''}</div>
+        <div><div class="contact-name">${u.nome} ${u.sobrenome||''}</div></div>
+      </div></td>
       <td style="color:var(--accent)">${u.email}</td>
-      <td><span class="perfil-badge ${perfilClass[u.perfil]}">${perfilLabels[u.perfil]}</span></td>
+      <td><span class="perfil-badge ${u.perfil}">${perfilLabels[u.perfil]||u.perfil}</span></td>
       <td><span class="badge ${u.status==='ativo'?'green':'gray'}">${u.status}</span></td>
       <td style="color:var(--text3)">${u.criado}</td>
       <td>
@@ -1752,87 +2005,66 @@ function renderUsuarios() {
           </button>
         </div>
       </td>
-    </tr>
-  `).join('') || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text3)">Nenhum usuário cadastrado.</td></tr>';
+    </tr>`).join('') || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text3)">Nenhum usuário.</td></tr>';
 }
 
-function openUserModal(id) {
+function openUserModal() {
   settingsState.editingUserId = null;
-  document.getElementById('user-edit-id').value = '';
   document.getElementById('user-modal-title').textContent = 'Novo usuário';
-  document.getElementById('user-nome').value = '';
-  document.getElementById('user-sobrenome').value = '';
-  document.getElementById('user-email').value = '';
+  document.getElementById('user-edit-id').value = '';
+  ['user-nome','user-sobrenome','user-email','user-senha'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
   document.getElementById('user-perfil').value = 'vendedor';
   document.getElementById('user-status').value = 'ativo';
-  document.getElementById('user-senha').value = '';
-  document.getElementById('user-senha-group').style.display = 'block';
+  const sg = document.getElementById('user-senha-group');
+  if (sg) sg.style.display = 'block';
   document.getElementById('user-modal-overlay').classList.remove('hidden');
 }
-
 function editUser(id) {
   const u = settingsState.usuarios.find(x => x.id === id);
   if (!u) return;
   settingsState.editingUserId = id;
-  document.getElementById('user-edit-id').value = id;
   document.getElementById('user-modal-title').textContent = 'Editar usuário';
+  document.getElementById('user-edit-id').value = id;
   document.getElementById('user-nome').value = u.nome;
   document.getElementById('user-sobrenome').value = u.sobrenome || '';
   document.getElementById('user-email').value = u.email;
   document.getElementById('user-perfil').value = u.perfil;
   document.getElementById('user-status').value = u.status;
   document.getElementById('user-senha').value = '';
-  document.getElementById('user-senha-group').style.display = 'none';
+  const sg = document.getElementById('user-senha-group');
+  if (sg) sg.style.display = 'none';
   document.getElementById('user-modal-overlay').classList.remove('hidden');
 }
-
 function saveUser() {
   const nome = document.getElementById('user-nome').value.trim();
   const email = document.getElementById('user-email').value.trim();
   if (!nome || !email) { alert('Nome e e-mail são obrigatórios.'); return; }
-
   const editId = settingsState.editingUserId;
   if (editId) {
     const u = settingsState.usuarios.find(x => x.id === editId);
-    if (u) {
-      u.nome = nome;
-      u.sobrenome = document.getElementById('user-sobrenome').value;
-      u.email = email;
-      u.perfil = document.getElementById('user-perfil').value;
-      u.status = document.getElementById('user-status').value;
-    }
+    if (u) { u.nome = nome; u.sobrenome = document.getElementById('user-sobrenome').value; u.email = email; u.perfil = document.getElementById('user-perfil').value; u.status = document.getElementById('user-status').value; }
     showToast('Usuário atualizado!');
   } else {
-    settingsState.usuarios.push({
-      id: Date.now(),
-      nome,
-      sobrenome: document.getElementById('user-sobrenome').value,
-      email,
-      perfil: document.getElementById('user-perfil').value,
-      status: document.getElementById('user-status').value,
-      criado: new Date().toLocaleDateString('pt-BR'),
-    });
-    showToast('Usuário criado com sucesso!');
+    settingsState.usuarios.push({ id: Date.now(), nome, sobrenome: document.getElementById('user-sobrenome').value, email, perfil: document.getElementById('user-perfil').value, status: document.getElementById('user-status').value, criado: new Date().toLocaleDateString('pt-BR') });
+    showToast('Usuário criado!');
   }
   document.getElementById('user-modal-overlay').classList.add('hidden');
   renderUsuarios();
 }
-
 function deleteUser(id) {
-  if (!confirm('Deseja remover este usuário?')) return;
+  if (settingsState.usuarios.length <= 1) { alert('Deve haver pelo menos um usuário.'); return; }
+  if (!confirm('Remover este usuário?')) return;
   settingsState.usuarios = settingsState.usuarios.filter(u => u.id !== id);
   renderUsuarios();
   showToast('Usuário removido.');
 }
 
-// ── Estágios Pipeline ────────────────────────────────────────────────────────
+// ── CONFIGURAÇÕES — PIPELINE ──────────────────────────────────────────────────
 function renderStages() {
   const list = document.getElementById('pipeline-stages-list');
+  if (!list) return;
   list.innerHTML = settingsState.stages.map(s => `
-    <div class="stage-row" data-id="${s.id}">
-      <div class="stage-drag" title="Arrastar">
-        <svg viewBox="0 0 24 24"><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-      </div>
+    <div class="stage-row">
       <div class="stage-dot" style="background:${s.cor}"></div>
       <div class="stage-name">${s.nome}</div>
       <div class="stage-meta">${s.prob}% · ${s.tipo==='ganho'?'<span style="color:var(--green)">Ganho</span>':s.tipo==='perdido'?'<span style="color:var(--red)">Perdido</span>':'Normal'}</div>
@@ -1844,349 +2076,94 @@ function renderStages() {
           <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
         </button>
       </div>
-    </div>
-  `).join('') || '<div class="empty">Nenhum estágio configurado.</div>';
+    </div>`).join('') || '<div class="empty">Nenhum estágio.</div>';
 }
-
 function openStageModal() {
-  settingsState.editingStageId = null;
-  settingsState.selectedColor = '#3b82f6';
+  settingsState.editingStageId = null; settingsState.selectedColor = '#3b82f6';
   document.getElementById('stage-modal-title').textContent = 'Novo estágio';
   document.getElementById('stage-edit-id').value = '';
   document.getElementById('stage-nome').value = '';
   document.getElementById('stage-prob').value = '50';
   document.getElementById('stage-tipo').value = 'normal';
-  document.querySelectorAll('.color-pick').forEach(c => c.classList.remove('selected'));
-  document.querySelector('.color-pick').classList.add('selected');
+  document.querySelectorAll('.color-pick').forEach((c,i) => c.classList.toggle('selected', i===0));
   document.getElementById('stage-modal-overlay').classList.remove('hidden');
 }
-
 function editStage(id) {
   const s = settingsState.stages.find(x => x.id === id);
   if (!s) return;
-  settingsState.editingStageId = id;
-  settingsState.selectedColor = s.cor;
+  settingsState.editingStageId = id; settingsState.selectedColor = s.cor;
   document.getElementById('stage-modal-title').textContent = 'Editar estágio';
   document.getElementById('stage-edit-id').value = id;
   document.getElementById('stage-nome').value = s.nome;
   document.getElementById('stage-prob').value = s.prob;
   document.getElementById('stage-tipo').value = s.tipo;
-  document.querySelectorAll('.color-pick').forEach(c => {
-    c.classList.toggle('selected', c.dataset.cor === s.cor);
-  });
+  document.querySelectorAll('.color-pick').forEach(c => c.classList.toggle('selected', c.dataset.cor === s.cor));
   document.getElementById('stage-modal-overlay').classList.remove('hidden');
 }
-
 function saveStage() {
   const nome = document.getElementById('stage-nome').value.trim();
   if (!nome) { alert('Informe o nome do estágio.'); return; }
   const editId = settingsState.editingStageId;
   if (editId) {
     const s = settingsState.stages.find(x => x.id === editId);
-    if (s) {
-      s.nome = nome;
-      s.cor = settingsState.selectedColor;
-      s.prob = parseInt(document.getElementById('stage-prob').value) || 50;
-      s.tipo = document.getElementById('stage-tipo').value;
-    }
+    if (s) { s.nome = nome; s.cor = settingsState.selectedColor; s.prob = parseInt(document.getElementById('stage-prob').value)||50; s.tipo = document.getElementById('stage-tipo').value; }
     showToast('Estágio atualizado!');
   } else {
-    settingsState.stages.push({
-      id: Date.now(), nome,
-      cor: settingsState.selectedColor,
-      prob: parseInt(document.getElementById('stage-prob').value) || 50,
-      tipo: document.getElementById('stage-tipo').value,
-    });
+    settingsState.stages.push({ id: Date.now(), nome, cor: settingsState.selectedColor, prob: parseInt(document.getElementById('stage-prob').value)||50, tipo: document.getElementById('stage-tipo').value });
+    if (!state.deals[nome]) state.deals[nome] = [];
     showToast('Estágio criado!');
   }
-  // Sincronizar com state.deals
-  syncStagesToDeals();
+  settingsState.stages.forEach(s => { stageColors[s.nome] = s.cor; });
   document.getElementById('stage-modal-overlay').classList.add('hidden');
   renderStages();
 }
-
 function deleteStage(id) {
-  if (settingsState.stages.length <= 1) { alert('O pipeline precisa ter ao menos um estágio.'); return; }
-  if (!confirm('Remover este estágio? Negócios nele serão movidos para o primeiro estágio.')) return;
+  if (settingsState.stages.length <= 1) { alert('Precisa haver ao menos um estágio.'); return; }
+  if (!confirm('Remover este estágio?')) return;
   settingsState.stages = settingsState.stages.filter(s => s.id !== id);
-  syncStagesToDeals();
   renderStages();
   showToast('Estágio removido.');
 }
-
 function selectColor(el) {
   document.querySelectorAll('.color-pick').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   settingsState.selectedColor = el.dataset.cor;
 }
 
-function syncStagesToDeals() {
-  // Garante que state.deals tenha todos os estágios do settings
-  settingsState.stages.forEach(s => {
-    if (!state.deals[s.nome]) state.deals[s.nome] = [];
-  });
-  // Atualiza stageColors no pipeline
-  settingsState.stages.forEach(s => { stageColors[s.nome] = s.cor; });
-}
-
-// ── Sankhya ──────────────────────────────────────────────────────────────────
+// ── CONFIGURAÇÕES — SANKHYA ───────────────────────────────────────────────────
 function saveSankhya() {
-  const url = document.getElementById('sk-url').value.trim();
+  const url = document.getElementById('sk-url')?.value.trim();
   if (!url) { alert('Informe a URL do servidor Sankhya.'); return; }
   const dot = document.getElementById('sankhya-dot');
   const txt = document.getElementById('sankhya-status-text');
-  dot.className = 'status-dot loading';
-  txt.textContent = 'Salvando...';
-  setTimeout(() => {
-    dot.className = 'status-dot ok';
-    txt.textContent = 'Configuração salva — aguardando primeira sincronização';
-    showToast('Configurações Sankhya salvas!');
-  }, 800);
+  dot.className = 'status-dot loading'; txt.textContent = 'Salvando...';
+  setTimeout(() => { dot.className = 'status-dot ok'; txt.textContent = 'Configuração salva — aguardando sincronização'; showToast('Configurações Sankhya salvas!'); }, 800);
 }
-
 function testSankhya() {
-  const url = document.getElementById('sk-url').value.trim();
+  const url = document.getElementById('sk-url')?.value.trim();
   if (!url) { showToast('Informe a URL do servidor Sankhya primeiro.'); return; }
   const dot = document.getElementById('sankhya-dot');
   const txt = document.getElementById('sankhya-status-text');
-  dot.className = 'status-dot loading';
-  txt.textContent = 'Testando conexão com ' + url + '...';
+  dot.className = 'status-dot loading'; txt.textContent = 'Testando conexão...';
   setTimeout(() => {
-    // Simula resultado (em produção, faria fetch real)
     const ok = url.startsWith('http');
     dot.className = 'status-dot ' + (ok ? 'ok' : 'error');
-    txt.textContent = ok
-      ? 'Conexão estabelecida com sucesso!'
-      : 'Erro: não foi possível conectar ao servidor Sankhya';
-    showToast(ok ? '✓ Conexão Sankhya OK!' : '✗ Falha na conexão Sankhya');
+    txt.textContent = ok ? 'Conexão estabelecida!' : 'Erro: não foi possível conectar';
+    showToast(ok ? '✓ Conexão OK!' : '✗ Falha na conexão');
   }, 1500);
 }
 
-// Init settings (chamado via navigate)
-
-
-// ── SISTEMA DE LOGIN ─────────────────────────────────────────────────────────
-const authState = {
-  currentUser: null,
-  users: [
-    {
-      id: 1, nome: 'Fabiano', sobrenome: 'Aparecido', 
-      email: 'gestorcomercial@glixquimica.com.br', 
-      senha: 'glix2025', perfil: 'admin',
-      perms: {all: true}
-    },
-    {
-      id: 2, nome: 'Ana', sobrenome: 'Silva',
-      email: 'ana.silva@glixquimica.com.br',
-      senha: 'ana123', perfil: 'gestor',
-      perms: {
-        dash:true, relat:true, 'cont-ver':true,'cont-criar':true,'cont-editar':true,
-        'emp-ver':true,'emp-criar':true,'pipe-ver':true,'pipe-criar':true,'pipe-mover':true,
-        'atv-ver':true,'atv-criar':true
-      }
-    },
-    {
-      id: 3, nome: 'Carlos', sobrenome: 'Neto',
-      email: 'carlos.neto@glixquimica.com.br',
-      senha: 'carlos123', perfil: 'vendedor',
-      perms: {
-        dash:true,'cont-ver':true,'cont-criar':true,'cont-editar':true,
-        'emp-ver':true,'pipe-ver':true,'pipe-criar':true,'pipe-mover':true,
-        'atv-ver':true,'atv-criar':true
-      }
-    }
-  ]
-};
-
-function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const senha = document.getElementById('login-senha').value;
-  const errEl = document.getElementById('login-error');
-  const btn = document.getElementById('login-btn');
-  
-  if (!email || !senha) {
-    errEl.textContent = 'Preencha e-mail e senha.';
-    errEl.classList.add('visible');
-    return;
-  }
-  
-  btn.disabled = true;
-  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white;animation:spin 1s linear infinite"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6h2c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6H4c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg> Entrando...';
-  
-  setTimeout(() => {
-    const user = authState.users.find(u => 
-      u.email.toLowerCase() === email.toLowerCase() && u.senha === senha
-    );
-    
-    if (user) {
-      authState.currentUser = user;
-      errEl.classList.remove('visible');
-      
-      // Atualizar UI com dados do usuário logado
-      document.querySelector('.user-name').textContent = user.nome + ' ' + (user.sobrenome||'');
-      document.querySelector('.user-role').textContent = 
-        {admin:'Administrador', gestor:'Gestor de Vendas', vendedor:'Vendedor', visualizador:'Visualizador'}[user.perfil] || user.perfil;
-      document.querySelector('.avatar').textContent = user.nome[0] + (user.sobrenome?user.sobrenome[0]:'');
-      
-      // Aplicar permissões de menu
-      applyPermissions(user);
-      
-      // Ocultar tela de login
-      document.getElementById('login-screen').classList.add('hidden');
-      showToast('Bem-vindo, ' + user.nome + '! 👋');
-    } else {
-      errEl.textContent = 'E-mail ou senha incorretos.';
-      errEl.classList.add('visible');
-      btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg> Entrar';
-    }
-  }, 600);
-}
-
-function applyPermissions(user) {
-  const isAdmin = user.perfil === 'admin' || user.perms.all;
-  
-  // Mostrar/ocultar menu de configurações
-  const configNav = document.querySelector('.nav-item[onclick*="settings"]');
-  if (configNav) configNav.style.display = (isAdmin || user.perms.config) ? '' : 'none';
-  
-  // Botão novo contato
-  const newBtn = document.querySelector('.btn-primary[onclick*="openModal"]');
-  if (newBtn) newBtn.style.display = (user.perms['cont-criar'] || isAdmin) ? '' : 'none';
-}
-
-function toggleLoginSenha() {
-  const inp = document.getElementById('login-senha');
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-}
-
-function logout() {
-  authState.currentUser = null;
-  document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-senha').value = '';
-  document.getElementById('login-error').classList.remove('visible');
-  document.getElementById('login-btn').disabled = false;
-  document.getElementById('login-btn').innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg> Entrar';
-}
-
-// Adicionar CSS do spin
+// ── CSS SPIN ANIMATION ────────────────────────────────────────────────────────
 const spinStyle = document.createElement('style');
 spinStyle.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
 document.head.appendChild(spinStyle);
 
-// ── CADASTRO DE NOVO USUÁRIO ─────────────────────────────────────────────────
-function openRegister() {
-  document.getElementById('register-screen').classList.add('visible');
-  applyPreset('vendedor', document.querySelector('.preset-btn.active'));
-}
+// ── INICIALIZAÇÃO ─────────────────────────────────────────────────────────────
+renderContacts();
+renderCompanies();
+renderTasks();
+setTimeout(renderRevenueChart, 100);
 
-function closeRegister() {
-  document.getElementById('register-screen').classList.remove('visible');
-}
-
-const PRESETS = {
-  admin: ['dash','relat','relat-export','kpi','cont-ver','cont-criar','cont-editar','cont-excluir',
-          'emp-ver','emp-criar','pipe-ver','pipe-criar','pipe-mover','pipe-todos','pipe-excluir','pipe-fechar',
-          'atv-ver','atv-criar','atv-todos','atv-excluir','config','usuarios','sankhya','pipeline-config','empresa','logs'],
-  gestor: ['dash','relat','kpi','cont-ver','cont-criar','cont-editar','emp-ver','emp-criar',
-           'pipe-ver','pipe-criar','pipe-mover','pipe-todos','pipe-fechar','atv-ver','atv-criar','atv-todos','config'],
-  vendedor: ['dash','cont-ver','cont-criar','cont-editar','emp-ver','pipe-ver','pipe-criar','pipe-mover','atv-ver','atv-criar'],
-  visualizador: ['dash','cont-ver','emp-ver','pipe-ver','atv-ver'],
-  custom: []
-};
-
-function applyPreset(preset, btn) {
-  // Atualizar botão ativo
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  
-  if (preset === 'custom') return;
-  
-  const perms = PRESETS[preset] || [];
-  const all_perms = ['dash','relat','relat-export','kpi','cont-ver','cont-criar','cont-editar','cont-excluir',
-    'emp-ver','emp-criar','pipe-ver','pipe-criar','pipe-mover','pipe-todos','pipe-excluir','pipe-fechar',
-    'atv-ver','atv-criar','atv-todos','atv-excluir','config','usuarios','sankhya','pipeline-config','empresa','logs'];
-  
-  all_perms.forEach(p => {
-    const el = document.getElementById('p-' + p);
-    if (el) el.checked = perms.includes(p);
-  });
-}
-
-function getSelectedPerms() {
-  const perms = {};
-  const all_perms = ['dash','relat','relat-export','kpi','cont-ver','cont-criar','cont-editar','cont-excluir',
-    'emp-ver','emp-criar','pipe-ver','pipe-criar','pipe-mover','pipe-todos','pipe-excluir','pipe-fechar',
-    'atv-ver','atv-criar','atv-todos','atv-excluir','config','usuarios','sankhya','pipeline-config','empresa','logs'];
-  all_perms.forEach(p => {
-    const el = document.getElementById('p-' + p);
-    if (el && el.checked) perms[p] = true;
-  });
-  return perms;
-}
-
-function saveNewUser() {
-  const nome = document.getElementById('reg-nome').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const senha = document.getElementById('reg-senha').value;
-  const senha2 = document.getElementById('reg-senha2').value;
-  
-  if (!nome || !email) { alert('Nome e e-mail são obrigatórios.'); return; }
-  if (!senha || senha.length < 6) { alert('Senha deve ter no mínimo 6 caracteres.'); return; }
-  if (senha !== senha2) { alert('As senhas não conferem.'); return; }
-  if (authState.users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-    alert('Este e-mail já está cadastrado.'); return;
-  }
-  
-  const perfil = document.querySelector('.preset-btn.active')?.textContent?.toLowerCase() || 'vendedor';
-  const perms = getSelectedPerms();
-  
-  const newUser = {
-    id: Date.now(),
-    nome,
-    sobrenome: document.getElementById('reg-sobrenome').value,
-    email, senha, perfil, perms,
-  };
-  
-  authState.users.push(newUser);
-  
-  // Também adicionar ao settingsState
-  settingsState.usuarios.push({
-    id: newUser.id, nome, sobrenome: newUser.sobrenome,
-    email, perfil, status: 'ativo',
-    criado: new Date().toLocaleDateString('pt-BR'),
-  });
-  
-  closeRegister();
-  showToast('Usuário ' + nome + ' criado com sucesso!');
-  
-  // Se estiver na aba usuários, atualizar
-  if (document.getElementById('stab-usuarios')?.classList.contains('active')) renderUsuarios();
-}
-
-// ── SIDEBAR MOBILE ────────────────────────────────────────────────────────────
-function toggleSidebar() {
-  const sb = document.querySelector('.sidebar');
-  const ov = document.getElementById('sidebar-overlay');
-  sb.classList.toggle('open');
-  ov.classList.toggle('visible');
-}
-
-function closeSidebar() {
-  document.querySelector('.sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('visible');
-}
-
-// Fechar sidebar ao navegar (mobile)
-const origNavigate = navigate;
-function navigate(page, el) {
-  origNavigate(page, el);
-  closeSidebar();
-}
-
-// Iniciar com tela de login
-// document.getElementById('login-screen') já é visível por padrão
 
 </script>
 </body>
