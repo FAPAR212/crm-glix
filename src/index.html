@@ -390,6 +390,52 @@
   .preset-btn:hover{background:var(--bg4);color:var(--text)}
   .preset-btn.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 
+  /* ── GESTOR DASHBOARD ──────────────────────────────────────────── */
+  .kpi-config-btn{display:inline-flex;align-items:center;gap:6px;padding:0 12px;height:30px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;transition:.15s;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-family:var(--font)}
+  .kpi-config-btn:hover{background:var(--bg4);color:var(--text)}
+  .kpi-config-btn svg{width:13px;height:13px;fill:currentColor}
+  .section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .section-hd-title{font-family:var(--font2);font-size:15px;font-weight:600;color:var(--text)}
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+  .team-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px 18px;transition:.2s}
+  .team-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+  .team-card-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .team-card-name{font-size:13.5px;font-weight:600;color:var(--text);line-height:1.2}
+  .team-card-role{font-size:11px;color:var(--text3);margin-top:2px}
+  .team-card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .team-stat-box{background:var(--bg3);border-radius:8px;padding:8px;text-align:center}
+  .team-stat-val{font-family:var(--font2);font-size:15px;font-weight:700;color:var(--text)}
+  .team-stat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+  .team-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+  .kpi-panel-overlay{position:fixed;inset:0;background:#00000060;z-index:89;display:none;backdrop-filter:blur(2px)}
+  .kpi-panel-overlay.open{display:block}
+  .kpi-config-panel{position:fixed;top:0;right:-400px;width:360px;height:100vh;background:var(--bg2);border-left:1px solid var(--border2);z-index:90;transition:right .25s cubic-bezier(.4,0,.2,1);overflow-y:auto;box-shadow:-6px 0 30px #00000060}
+  .kpi-config-panel.open{right:0}
+  .kpi-panel-hd{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:1}
+  .kpi-panel-hd-title{font-family:var(--font2);font-size:15px;font-weight:700;color:var(--text)}
+  .kpi-panel-body{padding:16px 20px}
+  .kpi-config-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:10px;transition:.15s;cursor:pointer}
+  .kpi-config-item:hover{background:var(--bg3)}
+  .kpi-config-item-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .kpi-config-item-icon svg{width:15px;height:15px;fill:currentColor}
+  .kpi-config-item-info{flex:1}
+  .kpi-config-item-label{font-size:13px;font-weight:500;color:var(--text)}
+  .kpi-config-item-desc{font-size:11px;color:var(--text3);margin-top:2px}
+  .kpi-toggle{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
+  .kpi-toggle.on{background:var(--accent);border-color:var(--accent)}
+  .kpi-toggle::after{content:'';width:14px;height:14px;border-radius:50%;background:white;position:absolute;top:2px;left:2px;transition:.2s}
+  .kpi-toggle.on::after{left:18px}
+  .stat-strip{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+  .stat-chip{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;flex:1;min-width:100px}
+  .stat-chip-val{font-family:var(--font2);font-size:20px;font-weight:700;color:var(--text)}
+  .stat-chip-lbl{font-size:11px;color:var(--text3);margin-top:3px}
+  .nav-role-mgmt{display:none}
+  @media(max-width:900px){
+    .team-grid{grid-template-columns:1fr 1fr}
+    .kpi-config-panel{width:100vw;right:-100vw}
+  }
+  @media(max-width:480px){.team-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -574,6 +620,16 @@
       Relatórios
     </div>
     
+    <div class="nav-section nav-role-mgmt">Equipe</div>
+    <div class="nav-item nav-role-mgmt" id="nav-item-gestor" onclick="navigate('gestor',this)">
+      <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+      Dashboard Gestor
+    </div>
+    <div class="nav-item nav-role-mgmt" id="nav-item-users" onclick="navigate('users',this)">
+      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      Usuários
+      <span class="nav-badge" id="nav-users-count">4</span>
+    </div>
     <div class="nav-section">Sistema</div>
     <div class="nav-item" onclick="navigate('settings',this)">
       <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
@@ -1139,6 +1195,98 @@
       </div><!-- /settings-layout -->
     </div><!-- /page-settings -->
 
+    <!-- GESTOR DASHBOARD -->
+    <div class="page" id="page-gestor">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+        <div style="font-size:13px;color:var(--text3)">Visão geral da equipe de vendas</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <select class="filter-select" style="height:34px" id="gestor-period">
+            <option>Este mês</option>
+            <option>Último trimestre</option>
+            <option>Este ano</option>
+          </select>
+          <button class="kpi-config-btn" onclick="openKpiPanel()">
+            <svg viewBox="0 0 24 24"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg>
+            Configurar KPIs
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Grid dinâmico -->
+      <div class="kpi-grid" id="gestor-kpi-grid" style="margin-bottom:24px"></div>
+
+      <!-- Cards da equipe -->
+      <div class="section-hd">
+        <div class="section-hd-title">Desempenho da Equipe</div>
+      </div>
+      <div class="team-grid" id="team-cards"></div>
+
+      <!-- Ranking + Atividades -->
+      <div class="dash-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Ranking de Vendas</div>
+            <select class="filter-select" style="height:28px;font-size:12px"><option>Este mês</option><option>Último trimestre</option></select>
+          </div>
+          <div class="card-body" style="padding:0">
+            <table style="width:100%;border-collapse:collapse;font-size:13px">
+              <thead><tr>
+                <th style="padding:10px 16px;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);font-weight:500;text-align:left;width:32px">#</th>
+                <th style="padding:10px 16px;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);font-weight:500;text-align:left">Vendedor</th>
+                <th style="padding:10px 16px;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);font-weight:500;text-align:right">Receita</th>
+                <th style="padding:10px 16px;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);font-weight:500;text-align:center">Negócios</th>
+                <th style="padding:10px 16px;color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);font-weight:500;text-align:center">Conversão</th>
+              </tr></thead>
+              <tbody id="ranking-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Atividades da Equipe</div></div>
+          <div id="team-activities" style="padding:0"></div>
+        </div>
+      </div>
+    </div><!-- /page-gestor -->
+
+    <!-- USUÁRIOS -->
+    <div class="page" id="page-users">
+      <div class="stat-strip" id="users-stat-strip"></div>
+      <div class="filter-bar">
+        <select class="filter-select" id="users-filter-perfil" onchange="renderUsersPage()">
+          <option value="">Todos os perfis</option>
+          <option value="admin">Administrador</option>
+          <option value="gestor">Gestor</option>
+          <option value="vendedor">Vendedor</option>
+          <option value="visualizador">Visualizador</option>
+        </select>
+        <select class="filter-select" id="users-filter-status" onchange="renderUsersPage()">
+          <option value="">Todos os status</option>
+          <option value="ativo">Ativo</option>
+          <option value="inativo">Inativo</option>
+        </select>
+        <div class="results-count" id="users-page-count"></div>
+        <button class="btn btn-primary" style="margin-left:auto" onclick="openUserPageModal()">
+          <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          <span>Novo usuário</span>
+        </button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Usuário</th>
+              <th>E-mail</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Criado em</th>
+              <th></th>
+            </tr></thead>
+            <tbody id="users-page-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /page-users -->
+
   </div>
 </div>
 
@@ -1224,6 +1372,25 @@
       <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
       <button class="btn btn-primary" id="modal-save" onclick="saveModal()">Salvar</button>
     </div>
+  </div>
+</div>
+
+<!-- KPI Config Panel -->
+<div class="kpi-panel-overlay" id="kpi-panel-overlay" onclick="closeKpiPanel()"></div>
+<div class="kpi-config-panel" id="kpi-config-panel">
+  <div class="kpi-panel-hd">
+    <div class="kpi-panel-hd-title">Configurar KPIs</div>
+    <button onclick="closeKpiPanel()" style="background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;border-radius:6px;transition:.15s" onmouseenter="this.style.background='var(--bg3)'" onmouseleave="this.style.background=''">
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+  </div>
+  <div class="kpi-panel-body">
+    <div style="font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.5">Ative ou desative cada indicador. Os KPIs habilitados aparecem no dashboard do gestor.</div>
+    <div id="kpi-config-list"></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:20px;justify-content:center" onclick="applyKpiConfig()">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      Aplicar configuração
+    </button>
   </div>
 </div>
 
@@ -1339,19 +1506,24 @@ let stageColors = {
 function navigate(page, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
+  const pageEl = document.getElementById('page-' + page);
+  if (!pageEl) return;
+  pageEl.classList.add('active');
   if (el) el.classList.add('active');
   const titles = {
     dashboard:'Dashboard', pipeline:'Pipeline de negócios', contacts:'Contatos',
-    companies:'Empresas', tasks:'Atividades', reports:'Relatórios', settings:'Configurações'
+    companies:'Empresas', tasks:'Atividades', reports:'Relatórios',
+    settings:'Configurações', gestor:'Dashboard Gestor', users:'Gestão de Usuários'
   };
   document.getElementById('page-title').textContent = titles[page] || page;
-  if (page === 'contacts') renderContacts();
-  if (page === 'pipeline') renderKanban();
+  if (page === 'contacts')  renderContacts();
+  if (page === 'pipeline')  renderKanban();
   if (page === 'companies') renderCompanies();
-  if (page === 'tasks') renderTasks();
-  if (page === 'reports') renderRevenueChart();
-  if (page === 'settings') { renderUsuarios(); renderStages(); }
+  if (page === 'tasks')     renderTasks();
+  if (page === 'reports')   renderRevenueChart();
+  if (page === 'settings')  { renderUsuarios(); renderStages(); }
+  if (page === 'gestor')    renderGestorDashboard();
+  if (page === 'users')     renderUsersPage();
   closeSidebar();
 }
 
@@ -1384,6 +1556,16 @@ function doLogin() {
       document.querySelector('.user-role').textContent = {admin:'Administrador',gestor:'Gestor de Vendas',vendedor:'Vendedor',visualizador:'Visualizador'}[user.perfil] || user.perfil;
       document.querySelector('.avatar').textContent = user.nome[0] + (user.sobrenome ? user.sobrenome[0] : '');
       document.getElementById('login-screen').classList.add('hidden');
+      // Mostrar itens de nav conforme perfil
+      const isMgmt = user.perfil === 'gestor' || user.perfil === 'admin';
+      document.querySelectorAll('.nav-role-mgmt').forEach(el => el.style.display = isMgmt ? '' : 'none');
+      updateNavUsersBadge();
+      // Roteamento por perfil
+      if (user.perfil === 'gestor') {
+        navigate('gestor', document.getElementById('nav-item-gestor'));
+      } else {
+        navigate('dashboard', document.querySelector('.nav-item[onclick*="dashboard"]'));
+      }
       showToast('Bem-vindo, ' + user.nome + '! 👋');
     } else {
       errEl.textContent = 'E-mail ou senha incorretos.'; errEl.classList.add('visible');
@@ -1402,6 +1584,7 @@ function logout() {
   document.getElementById('login-email').value = '';
   document.getElementById('login-senha').value = '';
   document.getElementById('login-error').classList.remove('visible');
+  document.querySelectorAll('.nav-role-mgmt').forEach(el => el.style.display = 'none');
   const btn = document.getElementById('login-btn');
   btn.disabled = false;
   btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg> Entrar';
@@ -2050,12 +2233,17 @@ function saveUser() {
   }
   document.getElementById('user-modal-overlay').classList.add('hidden');
   renderUsuarios();
+  if (document.getElementById('page-users')?.classList.contains('active')) renderUsersPage();
+  updateNavUsersBadge();
+  settingsState.editingContext = null;
 }
 function deleteUser(id) {
   if (settingsState.usuarios.length <= 1) { alert('Deve haver pelo menos um usuário.'); return; }
   if (!confirm('Remover este usuário?')) return;
   settingsState.usuarios = settingsState.usuarios.filter(u => u.id !== id);
   renderUsuarios();
+  if (document.getElementById('page-users')?.classList.contains('active')) renderUsersPage();
+  updateNavUsersBadge();
   showToast('Usuário removido.');
 }
 
@@ -2157,6 +2345,303 @@ function testSankhya() {
 const spinStyle = document.createElement('style');
 spinStyle.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
 document.head.appendChild(spinStyle);
+
+// ── GESTOR STATE ─────────────────────────────────────────────────────────────
+const gestorState = {
+  kpis: [
+    {id:'receita',   label:'Receita do mês',        desc:'Total de receita fechada no período',      icon:'blue',   enabled:true,  value:'R$347K', change:'+12,4%', up:true},
+    {id:'leads',     label:'Novos leads',            desc:'Leads adicionados no período',             icon:'green',  enabled:true,  value:'143',    change:'+8,7%',  up:true},
+    {id:'negocios',  label:'Negócios abertos',       desc:'Total de negócios em andamento',           icon:'amber',  enabled:true,  value:'28',     change:'-2',     up:false},
+    {id:'conversao', label:'Taxa de conversão',      desc:'Percentual de fechamentos vs leads',       icon:'purple', enabled:true,  value:'23,5%',  change:'+1,2pp', up:true},
+    {id:'ticket',    label:'Ticket médio',           desc:'Valor médio por negócio fechado',          icon:'blue',   enabled:false, value:'R$52K',  change:'+5,1%',  up:true},
+    {id:'ciclo',     label:'Ciclo médio de vendas',  desc:'Tempo médio para fechar negócios',         icon:'amber',  enabled:false, value:'18 dias', change:'-3d',  up:true},
+    {id:'pendentes', label:'Atividades pendentes',   desc:'Atividades em aberto na equipe',           icon:'red',    enabled:false, value:'5',      change:'',       up:false},
+    {id:'meta',      label:'% da meta mensal',       desc:'Progresso em relação à meta do mês',       icon:'green',  enabled:false, value:'74%',    change:'+8pp',   up:true},
+    {id:'pipeline',  label:'Valor do pipeline',      desc:'Soma dos negócios em andamento',           icon:'purple', enabled:false, value:'R$501K', change:'+14%',   up:true},
+    {id:'fechados',  label:'Negócios fechados',      desc:'Negócios ganhos no período',               icon:'green',  enabled:false, value:'8',      change:'+3',     up:true},
+  ]
+};
+
+const KPI_ICON_PATHS = {
+  blue:   '<path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>',
+  green:  '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>',
+  amber:  '<path d="M4 6h16v2H4zm4 5h12v2H8zm4 5h8v2h-8z"/>',
+  purple: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>',
+  red:    '<path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>',
+};
+
+// ── GESTOR DASHBOARD ──────────────────────────────────────────────────────────
+function renderGestorDashboard() {
+  renderGestorKpis();
+  renderTeamCards();
+  renderRanking();
+  renderTeamActivities();
+}
+
+function renderGestorKpis() {
+  const grid = document.getElementById('gestor-kpi-grid');
+  if (!grid) return;
+  const active = gestorState.kpis.filter(k => k.enabled);
+  const cols = Math.min(active.length, 4);
+  grid.style.gridTemplateColumns = `repeat(${cols},1fr)`;
+  grid.innerHTML = active.map(k => `
+    <div class="kpi-card">
+      <div class="kpi-icon ${k.icon}"><svg viewBox="0 0 24 24">${KPI_ICON_PATHS[k.icon]||KPI_ICON_PATHS.blue}</svg></div>
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-value">${k.value}</div>
+      ${k.change ? `<div class="kpi-change ${k.up?'up':'down'}"><svg viewBox="0 0 24 24"><path d="${k.up?'M7 14l5-5 5 5z':'M7 10l5 5 5-5z'}"/></svg>${k.change} vs mês ant.</div>` : ''}
+    </div>`).join('');
+}
+
+function getTeamData() {
+  const ownerMap = {
+    AS:{nome:'Ana Silva',    cor:avatarColors[0]},
+    CN:{nome:'Carlos Neto',  cor:avatarColors[1]},
+    MR:{nome:'Mariana Rocha',cor:avatarColors[2]},
+    PA:{nome:'Pedro Alves',  cor:avatarColors[3]},
+  };
+  const dealsByOwner = {}, revenueByOwner = {}, closedByOwner = {};
+  Object.entries(state.deals).forEach(([stage, deals]) => {
+    deals.forEach(d => {
+      dealsByOwner[d.owner]  = (dealsByOwner[d.owner]  || 0) + 1;
+      revenueByOwner[d.owner]= (revenueByOwner[d.owner]|| 0) + (parseInt(d.value.replace(/\D/g,''))||0);
+      if (stage === 'Fechado') closedByOwner[d.owner] = (closedByOwner[d.owner]||0)+1;
+    });
+  });
+  return Object.entries(ownerMap).map(([key, info]) => {
+    const contacts = state.contacts.filter(c => c.owner === info.nome).length;
+    const deals    = dealsByOwner[key]   || 0;
+    const revenue  = revenueByOwner[key] || 0;
+    const closed   = closedByOwner[key]  || 0;
+    const conv     = deals > 0 ? Math.round((closed/deals)*100) : 0;
+    return {key, ...info, contacts, deals, revenue, closed, conv};
+  }).sort((a,b) => b.revenue - a.revenue);
+}
+
+function renderTeamCards() {
+  const grid = document.getElementById('team-cards');
+  if (!grid) return;
+  const team = getTeamData();
+  grid.innerHTML = team.map((m, i) => `
+    <div class="team-card">
+      <div class="team-card-header">
+        <div class="user-avatar-sm" style="background:${m.cor};width:38px;height:38px;font-size:13px">${m.key}</div>
+        <div style="flex:1">
+          <div class="team-card-name">${m.nome}</div>
+          <div class="team-card-role">Vendedor</div>
+        </div>
+        ${i===0 ? '<span class="badge amber" style="font-size:11px">🏆 #1</span>' : `<span style="font-size:12px;color:var(--text3);font-weight:600">#${i+1}</span>`}
+      </div>
+      <div class="team-card-stats">
+        <div class="team-stat-box">
+          <div class="team-stat-val" style="color:var(--accent)">R$${Math.round(m.revenue/1000)}K</div>
+          <div class="team-stat-lbl">Receita</div>
+        </div>
+        <div class="team-stat-box">
+          <div class="team-stat-val">${m.deals}</div>
+          <div class="team-stat-lbl">Negócios</div>
+        </div>
+        <div class="team-stat-box">
+          <div class="team-stat-val" style="color:var(--green)">${m.conv}%</div>
+          <div class="team-stat-lbl">Conversão</div>
+        </div>
+      </div>
+      <div class="team-card-footer">
+        <span style="font-size:11px;color:var(--text3)">${m.contacts} contato${m.contacts!==1?'s':''}</span>
+        <span style="font-size:11px;color:var(--green)">${m.closed} fechado${m.closed!==1?'s':''}</span>
+      </div>
+    </div>`).join('');
+}
+
+function renderRanking() {
+  const tbody = document.getElementById('ranking-tbody');
+  if (!tbody) return;
+  const team   = getTeamData();
+  const maxRev = Math.max(...team.map(t => t.revenue), 1);
+  const medals = ['var(--amber)','var(--text2)','#cd7f32'];
+  tbody.innerHTML = team.map((m, i) => `
+    <tr>
+      <td style="padding:10px 16px;border-bottom:1px solid var(--border)">
+        <div style="width:22px;height:22px;border-radius:50%;background:${i<3?'var(--amber-soft)':'var(--bg3)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${i<3?medals[i]:'var(--text3)'}">${i+1}</div>
+      </td>
+      <td style="padding:10px 16px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="mini-avatar" style="width:26px;height:26px;font-size:9px;background:${m.cor}">${m.key}</div>
+          <span style="font-size:13px;font-weight:500;color:var(--text)">${m.nome}</span>
+        </div>
+      </td>
+      <td style="padding:10px 16px;border-bottom:1px solid var(--border);text-align:right">
+        <div style="font-size:13px;font-weight:700;color:var(--accent)">R$${Math.round(m.revenue/1000)}K</div>
+        <div style="height:3px;background:var(--bg3);border-radius:2px;margin-top:4px;overflow:hidden">
+          <div style="height:100%;background:var(--accent);border-radius:2px;width:${Math.round((m.revenue/maxRev)*100)}%"></div>
+        </div>
+      </td>
+      <td style="padding:10px 16px;border-bottom:1px solid var(--border);text-align:center">
+        <span style="font-size:13px;font-weight:600;color:var(--text)">${m.deals}</span>
+      </td>
+      <td style="padding:10px 16px;border-bottom:1px solid var(--border);text-align:center">
+        <span class="badge ${m.conv>=30?'green':m.conv>=15?'amber':'gray'}">${m.conv}%</span>
+      </td>
+    </tr>`).join('');
+}
+
+function renderTeamActivities() {
+  const c = document.getElementById('team-activities');
+  if (!c) return;
+  const colors = {high:'var(--red)',med:'var(--amber)',low:'var(--green)'};
+  const pending = state.tasks.filter(t => !t.done).slice(0,6);
+  c.innerHTML = pending.length ? pending.map(t => `
+    <div class="activity-item" style="padding:10px 20px">
+      <div class="activity-dot" style="background:${colors[t.priority]}"></div>
+      <div class="activity-content">
+        <div class="activity-text">${t.title}${t.contact?` — <strong>${t.contact}</strong>`:''}</div>
+        <div class="activity-time">${t.due} · <span class="task-tag">${t.tag}</span></div>
+      </div>
+    </div>`).join('')
+  : '<div class="empty" style="padding:20px">Nenhuma atividade pendente.</div>';
+}
+
+// ── KPI PANEL ─────────────────────────────────────────────────────────────────
+function openKpiPanel() {
+  renderKpiConfigPanel();
+  document.getElementById('kpi-config-panel').classList.add('open');
+  document.getElementById('kpi-panel-overlay').classList.add('open');
+}
+function closeKpiPanel() {
+  document.getElementById('kpi-config-panel').classList.remove('open');
+  document.getElementById('kpi-panel-overlay').classList.remove('open');
+}
+function renderKpiConfigPanel() {
+  const list = document.getElementById('kpi-config-list');
+  if (!list) return;
+  const iconBgs   = {blue:'var(--accent-soft)',green:'var(--green-soft)',amber:'var(--amber-soft)',purple:'var(--purple-soft)',red:'var(--red-soft)'};
+  const iconColor = {blue:'var(--accent)',green:'var(--green)',amber:'var(--amber)',purple:'var(--purple)',red:'var(--red)'};
+  list.innerHTML = gestorState.kpis.map(k => `
+    <div class="kpi-config-item" onclick="toggleKpiConfig('${k.id}')">
+      <div class="kpi-config-item-icon" style="background:${iconBgs[k.icon]};color:${iconColor[k.icon]}">
+        <svg viewBox="0 0 24 24">${KPI_ICON_PATHS[k.icon]||KPI_ICON_PATHS.blue}</svg>
+      </div>
+      <div class="kpi-config-item-info">
+        <div class="kpi-config-item-label">${k.label}</div>
+        <div class="kpi-config-item-desc">${k.desc}</div>
+      </div>
+      <div class="kpi-toggle ${k.enabled?'on':''}" id="kpi-toggle-${k.id}"></div>
+    </div>`).join('');
+}
+function toggleKpiConfig(id) {
+  const kpi = gestorState.kpis.find(k => k.id === id);
+  if (!kpi) return;
+  if (!kpi.enabled && gestorState.kpis.filter(k => k.enabled).length >= 8) {
+    showToast('Máximo de 8 KPIs permitidos.');
+    return;
+  }
+  kpi.enabled = !kpi.enabled;
+  const t = document.getElementById('kpi-toggle-' + id);
+  if (t) t.classList.toggle('on', kpi.enabled);
+}
+function applyKpiConfig() {
+  if (!gestorState.kpis.some(k => k.enabled)) { showToast('Selecione ao menos 1 KPI.'); return; }
+  closeKpiPanel();
+  renderGestorKpis();
+  showToast('KPIs atualizados!');
+}
+
+// ── PÁGINA DE USUÁRIOS ────────────────────────────────────────────────────────
+function renderUsersPage() {
+  const perfil = document.getElementById('users-filter-perfil')?.value || '';
+  const status = document.getElementById('users-filter-status')?.value || '';
+  let list = settingsState.usuarios;
+  if (perfil) list = list.filter(u => u.perfil === perfil);
+  if (status) list = list.filter(u => u.status === status);
+
+  const strip = document.getElementById('users-stat-strip');
+  if (strip) {
+    const total   = settingsState.usuarios.length;
+    const ativos  = settingsState.usuarios.filter(u => u.status === 'ativo').length;
+    const vend    = settingsState.usuarios.filter(u => u.perfil === 'vendedor').length;
+    const gestores= settingsState.usuarios.filter(u => u.perfil === 'gestor' || u.perfil === 'admin').length;
+    strip.innerHTML = `
+      <div class="stat-chip"><div class="stat-chip-val">${total}</div><div class="stat-chip-lbl">Total</div></div>
+      <div class="stat-chip"><div class="stat-chip-val" style="color:var(--green)">${ativos}</div><div class="stat-chip-lbl">Ativos</div></div>
+      <div class="stat-chip"><div class="stat-chip-val" style="color:var(--text3)">${total-ativos}</div><div class="stat-chip-lbl">Inativos</div></div>
+      <div class="stat-chip"><div class="stat-chip-val" style="color:var(--accent)">${vend}</div><div class="stat-chip-lbl">Vendedores</div></div>
+      <div class="stat-chip"><div class="stat-chip-val" style="color:var(--purple)">${gestores}</div><div class="stat-chip-lbl">Gestores</div></div>`;
+  }
+
+  const count = document.getElementById('users-page-count');
+  if (count) count.textContent = list.length + ' usuário' + (list.length !== 1 ? 's' : '');
+
+  const tbody = document.getElementById('users-page-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = list.map(u => {
+    const idx = settingsState.usuarios.indexOf(u);
+    return `<tr>
+      <td>
+        <div class="contact-cell">
+          <div class="user-avatar-sm" style="background:${avatarColors[idx % avatarColors.length]};width:32px;height:32px;font-size:11px">${u.nome[0]}${u.sobrenome?u.sobrenome[0]:''}</div>
+          <div><div class="contact-name">${u.nome} ${u.sobrenome||''}</div></div>
+        </div>
+      </td>
+      <td style="color:var(--accent)">${u.email}</td>
+      <td><span class="perfil-badge ${u.perfil}">${perfilLabels[u.perfil]||u.perfil}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="badge ${u.status==='ativo'?'green':'gray'}">${u.status}</span>
+          <button onclick="toggleUserStatus(${u.id})" class="action-btn" title="${u.status==='ativo'?'Desativar':'Ativar'}" style="color:${u.status==='ativo'?'var(--amber)':'var(--green)'}">
+            <svg viewBox="0 0 24 24"><path d="${u.status==='ativo'?'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 13H11V11h2v4zm0-6H11V7h2v2z':'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z'}"/></svg>
+          </button>
+        </div>
+      </td>
+      <td style="color:var(--text3)">${u.criado}</td>
+      <td>
+        <div style="display:flex;gap:6px">
+          <button class="action-btn" onclick="editUserFromPage(${u.id})" title="Editar">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </button>
+          <button class="action-btn" onclick="deleteUserFromPage(${u.id})" title="Excluir" style="color:var(--red)">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">Nenhum usuário encontrado.</td></tr>';
+}
+
+function toggleUserStatus(id) {
+  const u = settingsState.usuarios.find(x => x.id === id);
+  if (!u) return;
+  if (u.status === 'ativo' && settingsState.usuarios.filter(x => x.status === 'ativo').length <= 1) {
+    alert('Deve haver ao menos um usuário ativo.'); return;
+  }
+  u.status = u.status === 'ativo' ? 'inativo' : 'ativo';
+  renderUsersPage();
+  updateNavUsersBadge();
+  showToast('Status atualizado!');
+}
+
+function editUserFromPage(id) {
+  settingsState.editingContext = 'page';
+  editUser(id);
+}
+
+function deleteUserFromPage(id) {
+  if (settingsState.usuarios.length <= 1) { alert('Deve haver pelo menos um usuário.'); return; }
+  if (!confirm('Remover este usuário?')) return;
+  settingsState.usuarios = settingsState.usuarios.filter(u => u.id !== id);
+  renderUsersPage();
+  updateNavUsersBadge();
+  showToast('Usuário removido.');
+}
+
+function openUserPageModal() {
+  settingsState.editingContext = 'page';
+  openUserModal();
+}
+
+function updateNavUsersBadge() {
+  const el = document.getElementById('nav-users-count');
+  if (el) el.textContent = settingsState.usuarios.filter(u => u.status === 'ativo').length;
+}
 
 // ── INICIALIZAÇÃO ─────────────────────────────────────────────────────────────
 renderContacts();
