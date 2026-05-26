@@ -467,6 +467,11 @@
       <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>
       Entrar
     </button>
+    <div style="text-align:center;margin-top:14px">
+      <button onclick="emergencyReset()" style="background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer;font-family:var(--font);text-decoration:underline;text-underline-offset:2px" title="Use se não conseguir entrar após trocar a senha">
+        ⚠️ Esqueci a senha / Limpar sessão
+      </button>
+    </div>
     <div class="login-footer">GLIX Química · CRM integrado ao ERP Sankhya</div>
   </div>
 </div>
@@ -1550,12 +1555,25 @@ function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const senha = document.getElementById('login-senha').value;
   const errEl = document.getElementById('login-error');
-  const btn = document.getElementById('login-btn');
+  const btn   = document.getElementById('login-btn');
   if (!email || !senha) { errEl.textContent = 'Preencha e-mail e senha.'; errEl.classList.add('visible'); return; }
   btn.disabled = true;
   btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white;animation:spin 1s linear infinite"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6h2c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6H4c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg> Entrando...';
   setTimeout(() => {
-    const user = authState.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
+    // Tenta login nos dados carregados
+    let user = authState.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
+
+    // Fallback de segurança: testa também nos defaults (caso senha tenha corrompido no localStorage)
+    if (!user) {
+      const defUser = DEFAULT_DATA.authUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.senha === senha);
+      if (defUser) {
+        // Restaura o usuário com a senha padrão sem apagar outros dados
+        const idx = authState.users.findIndex(u => u.id === defUser.id);
+        if (idx !== -1) { authState.users[idx].senha = senha; persistAll(); }
+        user = authState.users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      }
+    }
+
     if (user) {
       authState.currentUser = user;
       errEl.classList.remove('visible');
@@ -1565,11 +1583,18 @@ function doLogin() {
       document.getElementById('login-screen').classList.add('hidden');
       showToast('Bem-vindo, ' + user.nome + '! 👋');
     } else {
-      errEl.textContent = 'E-mail ou senha incorretos.'; errEl.classList.add('visible');
+      errEl.textContent = 'E-mail ou senha incorretos.';
+      errEl.classList.add('visible');
       btn.disabled = false;
       btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg> Entrar';
     }
   }, 600);
+}
+
+function emergencyReset() {
+  if (!confirm('Isso vai limpar os dados salvos localmente e restaurar as senhas originais.\n\nContinuar?')) return;
+  localStorage.removeItem(LS_KEY);
+  location.reload();
 }
 function toggleLoginSenha() {
   const i = document.getElementById('login-senha');
