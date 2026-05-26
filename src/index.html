@@ -1362,8 +1362,20 @@
 
 <script>
 
+// ── TRATADOR GLOBAL DE ERROS ──────────────────────────────────────────────────
+window.onerror = function(msg, src, line, col, err) {
+  console.error('CRM ERRO:', msg, 'linha:', line);
+  // Mostra erro na tela de login se o sistema não carregou
+  const errEl = document.getElementById('login-error');
+  if (errEl && document.getElementById('login-screen') && !document.getElementById('login-screen').classList.contains('hidden')) {
+    errEl.textContent = '⚠️ Erro de sistema: ' + msg + ' (linha ' + line + ')';
+    errEl.classList.add('visible');
+  }
+  return false;
+};
+
 // ═══════════════════════════════════════════════════════════════════
-//  CRM GLIX — JavaScript Completo v7.0
+//  CRM GLIX — JavaScript Completo v8.0
 //  Persistência completa via localStorage
 // ═══════════════════════════════════════════════════════════════════
 
@@ -1610,8 +1622,12 @@ function logout() {
   btn.disabled = false;
   btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:white"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg> Entrar';
 }
-document.getElementById('login-email').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-senha').focus(); });
-document.getElementById('login-senha').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.addEventListener('DOMContentLoaded', function() {
+  const loginEmail = document.getElementById('login-email');
+  const loginSenha = document.getElementById('login-senha');
+  if (loginEmail) loginEmail.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('login-senha').focus(); });
+  if (loginSenha) loginSenha.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+});
 
 // ── CADASTRO USUÁRIO (LOGIN) ──────────────────────────────────────────────────
 function openRegister() {
@@ -2600,12 +2616,14 @@ function resetAllData() {
   setTimeout(() => location.reload(), 1200);
 }
 
-renderContacts();
-renderCompanies();
-renderTasks();
-setTimeout(renderRevenueChart, 100);
-setTimeout(populateEmpresaForm, 50);
-setTimeout(populateSankhyaForm, 50);
+document.addEventListener('DOMContentLoaded', function() {
+  renderContacts();
+  renderCompanies();
+  renderTasks();
+  setTimeout(renderRevenueChart, 100);
+  setTimeout(populateEmpresaForm, 50);
+  setTimeout(populateSankhyaForm, 50);
+});
 
 
 </script>
