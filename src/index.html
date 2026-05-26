@@ -1174,7 +1174,7 @@
           <div class="stab" id="stab-notificacoes">
             <div class="stab-header">
               <div><div class="stab-title">Notificações</div><div class="stab-desc">Configure quando e como deseja ser alertado</div></div>
-              <button class="btn btn-primary" onclick="showToast('Preferências de notificação salvas!')">
+              <button class="btn btn-primary" onclick="saveNotificacoes()">>
                 <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
                 Salvar
               </button>
@@ -1560,14 +1560,17 @@ function saveNewUser() {
   const email = document.getElementById('reg-email').value.trim();
   const senha = document.getElementById('reg-senha').value;
   const senha2 = document.getElementById('reg-senha2').value;
+  const sobrenome = document.getElementById('reg-sobrenome').value.trim();
   if (!nome || !email) { alert('Nome e e-mail são obrigatórios.'); return; }
   if (!senha || senha.length < 6) { alert('Senha deve ter no mínimo 6 caracteres.'); return; }
   if (senha !== senha2) { alert('As senhas não conferem.'); return; }
   if (authState.users.find(u => u.email.toLowerCase() === email.toLowerCase())) { alert('E-mail já cadastrado.'); return; }
   const perfil = document.querySelector('.preset-btn.active')?.textContent?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'') || 'vendedor';
   const perms = getSelectedPerms();
-  authState.users.push({ id: Date.now(), nome, sobrenome: document.getElementById('reg-sobrenome').value, email, senha, perfil, perms });
-  settingsState.usuarios.push({ id: Date.now(), nome, sobrenome: document.getElementById('reg-sobrenome').value, email, perfil, status: 'ativo', criado: new Date().toLocaleDateString('pt-BR') });
+  const newId = Date.now();
+  const criado = new Date().toLocaleDateString('pt-BR');
+  authState.users.push({ id: newId, nome, sobrenome, email, senha, perfil, perms });
+  settingsState.usuarios.push({ id: newId, nome, sobrenome, email, perfil, status: 'ativo', criado });
   closeRegister();
   showToast('Usuário ' + nome + ' criado com sucesso!');
   if (document.getElementById('stab-usuarios')?.classList.contains('active')) renderUsuarios();
@@ -2086,13 +2089,14 @@ function showSettingsTab(tab, el) {
   if (el) el.classList.add('active');
   if (tab === 'usuarios') renderUsuarios();
   if (tab === 'pipeline') renderStages();
+  if (tab === 'senhas') renderPwdUsers();
 }
 
 // ── CONFIGURAÇÕES — EMPRESA ───────────────────────────────────────────────────
 function saveEmpresa() {
   const razao = document.getElementById('emp-razao')?.value.trim();
   if (!razao) { alert('Informe a razão social.'); return; }
-  showToast('Dados da empresa salvos com sucesso!');
+  showToast('✓ Dados da empresa salvos com sucesso!');
 }
 
 // ── CONFIGURAÇÕES — USUÁRIOS ──────────────────────────────────────────────────
@@ -2134,8 +2138,9 @@ function openUserModal() {
   document.getElementById('user-perfil').value = 'vendedor';
   document.getElementById('user-status').value = 'ativo';
   const sg = document.getElementById('user-senha-group');
-  if (sg) sg.style.display = 'block';
+  if (sg) { sg.style.display = 'block'; sg.querySelector('label').textContent = 'Senha *'; }
   document.getElementById('user-modal-overlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('user-nome').focus(), 80);
 }
 function editUser(id) {
   const u = settingsState.usuarios.find(x => x.id === id);
@@ -2150,29 +2155,47 @@ function editUser(id) {
   document.getElementById('user-status').value = u.status;
   document.getElementById('user-senha').value = '';
   const sg = document.getElementById('user-senha-group');
-  if (sg) sg.style.display = 'none';
+  if (sg) { sg.style.display = 'none'; }
   document.getElementById('user-modal-overlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('user-nome').focus(), 80);
 }
 function saveUser() {
   const nome = document.getElementById('user-nome').value.trim();
   const email = document.getElementById('user-email').value.trim();
+  const perfil = document.getElementById('user-perfil').value;
+  const status = document.getElementById('user-status').value;
+  const sobrenome = document.getElementById('user-sobrenome').value.trim();
   if (!nome || !email) { alert('Nome e e-mail são obrigatórios.'); return; }
   const editId = settingsState.editingUserId;
   if (editId) {
+    // Atualiza settingsState
     const u = settingsState.usuarios.find(x => x.id === editId);
-    if (u) { u.nome = nome; u.sobrenome = document.getElementById('user-sobrenome').value; u.email = email; u.perfil = document.getElementById('user-perfil').value; u.status = document.getElementById('user-status').value; }
+    if (u) { u.nome = nome; u.sobrenome = sobrenome; u.email = email; u.perfil = perfil; u.status = status; }
+    // Atualiza authState
+    const au = authState.users.find(x => x.id === editId);
+    if (au) { au.nome = nome; au.sobrenome = sobrenome; au.email = email; au.perfil = perfil; }
     showToast('Usuário atualizado!');
   } else {
-    settingsState.usuarios.push({ id: Date.now(), nome, sobrenome: document.getElementById('user-sobrenome').value, email, perfil: document.getElementById('user-perfil').value, status: document.getElementById('user-status').value, criado: new Date().toLocaleDateString('pt-BR') });
-    showToast('Usuário criado!');
+    const senha = document.getElementById('user-senha').value;
+    if (!senha || senha.length < 6) { alert('Senha deve ter no mínimo 6 caracteres.'); return; }
+    if (authState.users.find(u => u.email.toLowerCase() === email.toLowerCase())) { alert('E-mail já cadastrado.'); return; }
+    const newId = Date.now();
+    const criado = new Date().toLocaleDateString('pt-BR');
+    settingsState.usuarios.push({ id: newId, nome, sobrenome, email, perfil, status, criado });
+    authState.users.push({ id: newId, nome, sobrenome, email, senha, perfil });
+    showToast('Usuário criado com sucesso!');
   }
   document.getElementById('user-modal-overlay').classList.add('hidden');
   renderUsuarios();
 }
 function deleteUser(id) {
   if (settingsState.usuarios.length <= 1) { alert('Deve haver pelo menos um usuário.'); return; }
-  if (!confirm('Remover este usuário?')) return;
+  const u = settingsState.usuarios.find(x => x.id === id);
+  if (!u) return;
+  if (authState.currentUser && authState.currentUser.id === id) { alert('Não é possível excluir o usuário logado.'); return; }
+  if (!confirm(`Remover o usuário "${u.nome} ${u.sobrenome||''}"?`)) return;
   settingsState.usuarios = settingsState.usuarios.filter(u => u.id !== id);
+  authState.users = authState.users.filter(u => u.id !== id);
   renderUsuarios();
   showToast('Usuário removido.');
 }
@@ -2221,24 +2244,44 @@ function editStage(id) {
 function saveStage() {
   const nome = document.getElementById('stage-nome').value.trim();
   if (!nome) { alert('Informe o nome do estágio.'); return; }
+  const prob = parseInt(document.getElementById('stage-prob').value) || 50;
+  const tipo = document.getElementById('stage-tipo').value;
+  const cor = settingsState.selectedColor || '#3b82f6';
   const editId = settingsState.editingStageId;
   if (editId) {
     const s = settingsState.stages.find(x => x.id === editId);
-    if (s) { s.nome = nome; s.cor = settingsState.selectedColor; s.prob = parseInt(document.getElementById('stage-prob').value)||50; s.tipo = document.getElementById('stage-tipo').value; }
+    if (s) {
+      // Se nome mudou, migra os deals
+      if (s.nome !== nome) {
+        state.deals[nome] = state.deals[s.nome] || [];
+        delete state.deals[s.nome];
+      }
+      s.nome = nome; s.cor = cor; s.prob = prob; s.tipo = tipo;
+    }
     showToast('Estágio atualizado!');
   } else {
-    settingsState.stages.push({ id: Date.now(), nome, cor: settingsState.selectedColor, prob: parseInt(document.getElementById('stage-prob').value)||50, tipo: document.getElementById('stage-tipo').value });
+    if (settingsState.stages.find(s => s.nome.toLowerCase() === nome.toLowerCase())) { alert('Já existe um estágio com esse nome.'); return; }
+    settingsState.stages.push({ id: Date.now(), nome, cor, prob, tipo });
     if (!state.deals[nome]) state.deals[nome] = [];
-    showToast('Estágio criado!');
+    showToast('Estágio "' + nome + '" criado!');
   }
+  // Reconstrói stageColors
+  stageColors = {};
   settingsState.stages.forEach(s => { stageColors[s.nome] = s.cor; });
   document.getElementById('stage-modal-overlay').classList.add('hidden');
   renderStages();
 }
 function deleteStage(id) {
   if (settingsState.stages.length <= 1) { alert('Precisa haver ao menos um estágio.'); return; }
-  if (!confirm('Remover este estágio?')) return;
-  settingsState.stages = settingsState.stages.filter(s => s.id !== id);
+  const s = settingsState.stages.find(x => x.id === id);
+  if (!s) return;
+  if (state.deals[s.nome] && state.deals[s.nome].length > 0) {
+    if (!confirm(`O estágio "${s.nome}" tem ${state.deals[s.nome].length} negócio(s). Remover mesmo assim?`)) return;
+  } else {
+    if (!confirm(`Remover o estágio "${s.nome}"?`)) return;
+  }
+  delete state.deals[s.nome];
+  settingsState.stages = settingsState.stages.filter(x => x.id !== id);
   renderStages();
   showToast('Estágio removido.');
 }
@@ -2275,6 +2318,18 @@ function testSankhya() {
 const spinStyle = document.createElement('style');
 spinStyle.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
 document.head.appendChild(spinStyle);
+
+// ── CONFIGURAÇÕES — NOTIFICAÇÕES ──────────────────────────────────────────────
+const notifState = {
+  atv_vencidas: true, atv_proximas: true, antecedencia: '1 dia antes',
+  lead_novo: true, negocio_fechado: true, negocio_parado: false, tempo_parado: '15 dias',
+  notif_sistema: true, notif_email: false, email: 'gestorcomercial@glixquimica.com.br'
+};
+function saveNotificacoes() {
+  const emailEl = document.getElementById('notif-email');
+  if (emailEl) notifState.email = emailEl.value.trim();
+  showToast('✓ Preferências de notificação salvas!');
+}
 
 // ── CRUD SENHAS ───────────────────────────────────────────────────────────────
 let pwdState = { targetUserId: null, isAdmin: false };
@@ -2391,13 +2446,6 @@ function savePwdChange() {
     showToast('✓ Senha alterada com sucesso!');
     setTimeout(closePwdModal, 1400);
   }, 600);
-}
-
-// Expor renderPwdUsers no showSettingsTab
-const _origShowSettingsTab = showSettingsTab;
-function showSettingsTab(tab, el) {
-  _origShowSettingsTab(tab, el);
-  if (tab === 'senhas') renderPwdUsers();
 }
 
 // ── INICIALIZAÇÃO ─────────────────────────────────────────────────────────────
