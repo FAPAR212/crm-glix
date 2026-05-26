@@ -2459,11 +2459,6 @@ spinStyle.textContent = '@keyframes spin{from{transform:rotate(0deg)}to{transfor
 document.head.appendChild(spinStyle);
 
 // ── CONFIGURAÇÕES — NOTIFICAÇÕES ──────────────────────────────────────────────
-const notifState = {
-  atv_vencidas: true, atv_proximas: true, antecedencia: '1 dia antes',
-  lead_novo: true, negocio_fechado: true, negocio_parado: false, tempo_parado: '15 dias',
-  notif_sistema: true, notif_email: false, email: 'gestorcomercial@glixquimica.com.br'
-};
 function saveNotificacoes() {
   const emailEl = document.getElementById('notif-email');
   if (emailEl) notifState.email = emailEl.value.trim();
