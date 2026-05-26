@@ -1008,6 +1008,10 @@
                 <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:white"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
                 Salvar
               </button>
+              <button class="btn btn-ghost" onclick="resetAllData()" style="border-color:var(--red)40;color:var(--red);margin-left:8px" title="Apagar todos os dados salvos e restaurar exemplos">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6h2c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6H4c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                Resetar dados
+              </button>
             </div>
             <div class="form-section">
               <div class="form-section-title">Identificação</div>
@@ -1354,20 +1358,14 @@
 <script>
 
 // ═══════════════════════════════════════════════════════════════════
-//  CRM GLIX — JavaScript Completo v4.0
-//  Sem funções duplicadas, CRUD funcional em todos os módulos
+//  CRM GLIX — JavaScript Completo v7.0
+//  Persistência completa via localStorage
 // ═══════════════════════════════════════════════════════════════════
 
-// ── ESTADO GLOBAL ────────────────────────────────────────────────────────────
-const avatarColors = [
-  'linear-gradient(135deg,#3b82f6,#8b5cf6)',
-  'linear-gradient(135deg,#22c55e,#3b82f6)',
-  'linear-gradient(135deg,#f59e0b,#ef4444)',
-  'linear-gradient(135deg,#a855f7,#ec4899)',
-  'linear-gradient(135deg,#06b6d4,#22c55e)',
-];
+// ── PERSISTÊNCIA localStorage ─────────────────────────────────────────────────
+const LS_KEY = 'crm_glix_data';
 
-const state = {
+const DEFAULT_DATA = {
   contacts: [
     {id:1,name:'Ana Beatriz',company:'Tech Solutions',role:'CEO',email:'ana@tech.com.br',phone:'(11) 9 8877-6655',status:'ativo',owner:'Ana Silva',color:0},
     {id:2,name:'Roberto Lima',company:'Grupo Mardan',role:'Diretor Comercial',email:'roberto@mardan.com',phone:'(21) 9 7766-5544',status:'ativo',owner:'Carlos Neto',color:1},
@@ -1413,14 +1411,6 @@ const state = {
     {id:5,title:'Atualizar forecast do mês no sistema',done:true,priority:'low',contact:'',due:'Ontem',tag:'Interno'},
     {id:6,title:'Preparar apresentação para reunião trimestral',done:true,priority:'med',contact:'',due:'Seg',tag:'Interno'},
   ],
-  dragId: null,
-  dragStage: null,
-  modalType: '',
-  editingContactId: null,
-  editingCompanyId: null,
-};
-
-const settingsState = {
   usuarios: [
     {id:1,nome:'Fabiano',sobrenome:'Aparecido',email:'gestorcomercial@glixquimica.com.br',perfil:'admin',status:'ativo',criado:'06/05/2026'},
     {id:2,nome:'Ana',sobrenome:'Silva',email:'ana.silva@glixquimica.com.br',perfil:'gestor',status:'ativo',criado:'06/05/2026'},
@@ -1434,24 +1424,95 @@ const settingsState = {
     {id:4,nome:'Negociação',cor:'#f59e0b',prob:75,tipo:'normal'},
     {id:5,nome:'Fechado',cor:'#22c55e',prob:100,tipo:'ganho'},
   ],
-  editingUserId: null,
-  editingStageId: null,
-  selectedColor: '#3b82f6',
+  authUsers: [
+    {id:1,nome:'Fabiano',sobrenome:'Aparecido',email:'gestorcomercial@glixquimica.com.br',senha:'glix2025',perfil:'admin'},
+    {id:2,nome:'Ana',sobrenome:'Silva',email:'ana.silva@glixquimica.com.br',senha:'ana123',perfil:'gestor'},
+    {id:3,nome:'Carlos',sobrenome:'Neto',email:'carlos.neto@glixquimica.com.br',senha:'carlos123',perfil:'vendedor'},
+  ],
+  empresa: {
+    razao:'GLIX QUIMICA', fantasia:'GLIX', cnpj:'09.044.896/0001-85',
+    ie:'', segmento:'Indústria Saneantes', moeda:'BRL',
+    email:'gestorcomercial@glixquimica.com.br', telefone:'62982335498',
+    site:'glixquimica.com.br', cep:'', rua:'', num:'', comp:'', bairro:'', cidade:''
+  },
+  notif: {
+    atv_vencidas:true, atv_proximas:true, antecedencia:'1 dia antes',
+    lead_novo:true, negocio_fechado:true, negocio_parado:false, tempo_parado:'15 dias',
+    notif_sistema:true, notif_email:false, email:'gestorcomercial@glixquimica.com.br'
+  },
+  sankhya: { url:'', usuario:'', codparc:'', tipoper:'', intervalo:'A cada 15 minutos' }
+};
+
+// Carrega dados do localStorage ou usa defaults
+function loadData() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return JSON.parse(JSON.stringify(DEFAULT_DATA));
+    const saved = JSON.parse(raw);
+    // Merge: garante que novas chaves do DEFAULT existam
+    const d = JSON.parse(JSON.stringify(DEFAULT_DATA));
+    Object.keys(d).forEach(k => { if (saved[k] !== undefined) d[k] = saved[k]; });
+    return d;
+  } catch(e) { return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
+}
+
+// Salva TUDO no localStorage de uma vez
+function persistAll() {
+  try {
+    const snapshot = {
+      contacts: state.contacts,
+      companies: state.companies,
+      deals: state.deals,
+      tasks: state.tasks,
+      usuarios: settingsState.usuarios,
+      stages: settingsState.stages,
+      authUsers: authState.users,
+      empresa: empresaState,
+      notif: notifState,
+      sankhya: sankhyaState
+    };
+    localStorage.setItem(LS_KEY, JSON.stringify(snapshot));
+  } catch(e) { console.warn('Erro ao salvar dados:', e); }
+}
+
+// Inicializa todos os estados a partir do localStorage
+const _data = loadData();
+
+// ── ESTADO GLOBAL ────────────────────────────────────────────────────────────
+const avatarColors = [
+  'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+  'linear-gradient(135deg,#22c55e,#3b82f6)',
+  'linear-gradient(135deg,#f59e0b,#ef4444)',
+  'linear-gradient(135deg,#a855f7,#ec4899)',
+  'linear-gradient(135deg,#06b6d4,#22c55e)',
+];
+
+const state = {
+  contacts: _data.contacts,
+  companies: _data.companies,
+  deals: _data.deals,
+  tasks: _data.tasks,
+  dragId: null, dragStage: null,
+  modalType: '', editingContactId: null, editingCompanyId: null,
+};
+
+const settingsState = {
+  usuarios: _data.usuarios,
+  stages: _data.stages,
+  editingUserId: null, editingStageId: null, selectedColor: '#3b82f6',
 };
 
 const authState = {
   currentUser: null,
-  users: [
-    {id:1,nome:'Fabiano',sobrenome:'Aparecido',email:'gestorcomercial@glixquimica.com.br',senha:'glix2025',perfil:'admin'},
-    {id:2,nome:'Ana',sobrenome:'Silva',email:'ana.silva@glixquimica.com.br',senha:'ana123',perfil:'gestor'},
-    {id:3,nome:'Carlos',sobrenome:'Neto',email:'carlos.neto@glixquimica.com.br',senha:'carlos123',perfil:'vendedor'},
-  ]
+  users: _data.authUsers,
 };
 
-let stageColors = {
-  'Prospecção':'#3b82f6','Qualificado':'#8b5cf6','Proposta':'#a855f7',
-  'Negociação':'#f59e0b','Fechado':'#22c55e'
-};
+const empresaState = _data.empresa;
+const notifState   = _data.notif;
+const sankhyaState = _data.sankhya;
+
+let stageColors = {};
+settingsState.stages.forEach(s => { stageColors[s.nome] = s.cor; });
 
 // ── NAVEGAÇÃO ─────────────────────────────────────────────────────────────────
 function navigate(page, el) {
@@ -1572,6 +1633,7 @@ function saveNewUser() {
   authState.users.push({ id: newId, nome, sobrenome, email, senha, perfil, perms });
   settingsState.usuarios.push({ id: newId, nome, sobrenome, email, perfil, status: 'ativo', criado });
   closeRegister();
+  persistAll();
   showToast('Usuário ' + nome + ' criado com sucesso!');
   if (document.getElementById('stab-usuarios')?.classList.contains('active')) renderUsuarios();
 }
@@ -1782,6 +1844,7 @@ function saveModal() {
     }
     closeModal();
     if (document.getElementById('page-contacts').classList.contains('active')) renderContacts();
+    persistAll();
 
   } else if (type === 'deal') {
     const name = document.getElementById('f-deal-name').value.trim();
@@ -1802,6 +1865,7 @@ function saveModal() {
     });
     closeModal();
     renderKanban();
+    persistAll();
     showToast('Negócio criado!');
 
   } else if (type === 'task') {
@@ -1818,6 +1882,7 @@ function saveModal() {
     });
     closeModal();
     if (document.getElementById('page-tasks').classList.contains('active')) renderTasks();
+    persistAll();
     showToast('Atividade criada!');
 
   } else if (type === 'company') {
@@ -1848,6 +1913,7 @@ function saveModal() {
     }
     closeModal();
     if (document.getElementById('page-companies').classList.contains('active')) renderCompanies();
+    persistAll();
   }
 }
 
@@ -1890,6 +1956,7 @@ function deleteContact(id) {
   if (!confirm('Remover este contato?')) return;
   state.contacts = state.contacts.filter(c => c.id !== id);
   renderContacts();
+  persistAll();
   showToast('Contato removido.');
 }
 function filterContacts() {
@@ -1954,6 +2021,7 @@ function deleteCompany(id) {
   if (!confirm('Remover esta empresa?')) return;
   state.companies = state.companies.filter(c => c.id !== id);
   renderCompanies();
+  persistAll();
   showToast('Empresa removida.');
 }
 
@@ -1999,6 +2067,7 @@ function deleteDeal(id, stage) {
   if (!confirm('Remover este negócio?')) return;
   state.deals[stage] = state.deals[stage].filter(d => d.id !== id);
   renderKanban();
+  persistAll();
   showToast('Negócio removido.');
 }
 function dragStart(e, id, stage) { state.dragId = id; state.dragStage = stage; e.currentTarget.classList.add('dragging'); }
@@ -2016,6 +2085,7 @@ function drop(e, toStage) {
   state.deals[toStage].push(deal);
   state.dragId = null; state.dragStage = null;
   renderKanban();
+  persistAll();
   showToast(`Negócio movido para "${toStage}"`);
 }
 
@@ -2052,12 +2122,13 @@ function renderTasks(filter) {
 
 function toggleTask(id) {
   const t = state.tasks.find(x => x.id === id);
-  if (t) { t.done = !t.done; renderTasks(); showToast(t.done ? 'Atividade concluída!' : 'Atividade reaberta.'); }
+  if (t) { t.done = !t.done; renderTasks(); persistAll(); showToast(t.done ? 'Atividade concluída!' : 'Atividade reaberta.'); }
 }
 function deleteTask(id) {
   if (!confirm('Remover esta atividade?')) return;
   state.tasks = state.tasks.filter(t => t.id !== id);
   renderTasks();
+  persistAll();
   showToast('Atividade removida.');
 }
 function filterTasks(f, el) {
@@ -2096,6 +2167,23 @@ function showSettingsTab(tab, el) {
 function saveEmpresa() {
   const razao = document.getElementById('emp-razao')?.value.trim();
   if (!razao) { alert('Informe a razão social.'); return; }
+  // Captura todos os campos da empresa
+  empresaState.razao   = razao;
+  empresaState.fantasia= document.getElementById('emp-fantasia')?.value.trim() || empresaState.fantasia;
+  empresaState.cnpj    = document.getElementById('emp-cnpj')?.value.trim()    || empresaState.cnpj;
+  empresaState.ie      = document.getElementById('emp-ie')?.value.trim()      || '';
+  empresaState.segmento= document.getElementById('emp-segmento')?.value       || empresaState.segmento;
+  empresaState.moeda   = document.getElementById('emp-moeda')?.value          || empresaState.moeda;
+  empresaState.email   = document.getElementById('emp-email')?.value.trim()   || empresaState.email;
+  empresaState.telefone= document.getElementById('emp-telefone')?.value.trim()|| empresaState.telefone;
+  empresaState.site    = document.getElementById('emp-site')?.value.trim()    || empresaState.site;
+  empresaState.cep     = document.getElementById('emp-cep')?.value.trim()     || '';
+  empresaState.rua     = document.getElementById('emp-rua')?.value.trim()     || '';
+  empresaState.num     = document.getElementById('emp-num')?.value.trim()     || '';
+  empresaState.comp    = document.getElementById('emp-comp')?.value.trim()    || '';
+  empresaState.bairro  = document.getElementById('emp-bairro')?.value.trim()  || '';
+  empresaState.cidade  = document.getElementById('emp-cidade')?.value.trim()  || '';
+  persistAll();
   showToast('✓ Dados da empresa salvos com sucesso!');
 }
 
@@ -2187,6 +2275,7 @@ function saveUser() {
   }
   document.getElementById('user-modal-overlay').classList.add('hidden');
   renderUsuarios();
+  persistAll();
 }
 function deleteUser(id) {
   if (settingsState.usuarios.length <= 1) { alert('Deve haver pelo menos um usuário.'); return; }
@@ -2197,6 +2286,7 @@ function deleteUser(id) {
   settingsState.usuarios = settingsState.usuarios.filter(u => u.id !== id);
   authState.users = authState.users.filter(u => u.id !== id);
   renderUsuarios();
+  persistAll();
   showToast('Usuário removido.');
 }
 
@@ -2270,6 +2360,7 @@ function saveStage() {
   settingsState.stages.forEach(s => { stageColors[s.nome] = s.cor; });
   document.getElementById('stage-modal-overlay').classList.add('hidden');
   renderStages();
+  persistAll();
 }
 function deleteStage(id) {
   if (settingsState.stages.length <= 1) { alert('Precisa haver ao menos um estágio.'); return; }
@@ -2283,6 +2374,7 @@ function deleteStage(id) {
   delete state.deals[s.nome];
   settingsState.stages = settingsState.stages.filter(x => x.id !== id);
   renderStages();
+  persistAll();
   showToast('Estágio removido.');
 }
 function selectColor(el) {
@@ -2295,10 +2387,16 @@ function selectColor(el) {
 function saveSankhya() {
   const url = document.getElementById('sk-url')?.value.trim();
   if (!url) { alert('Informe a URL do servidor Sankhya.'); return; }
+  sankhyaState.url      = url;
+  sankhyaState.usuario  = document.getElementById('sk-usuario')?.value.trim() || '';
+  sankhyaState.codparc  = document.getElementById('sk-codparc')?.value || '';
+  sankhyaState.tipoper  = document.getElementById('sk-tipoper')?.value || '';
+  sankhyaState.intervalo= document.getElementById('sk-intervalo')?.value || 'A cada 15 minutos';
   const dot = document.getElementById('sankhya-dot');
   const txt = document.getElementById('sankhya-status-text');
   dot.className = 'status-dot loading'; txt.textContent = 'Salvando...';
-  setTimeout(() => { dot.className = 'status-dot ok'; txt.textContent = 'Configuração salva — aguardando sincronização'; showToast('Configurações Sankhya salvas!'); }, 800);
+  persistAll();
+  setTimeout(() => { dot.className = 'status-dot ok'; txt.textContent = 'Configuração salva — aguardando sincronização'; showToast('✓ Configurações Sankhya salvas!'); }, 800);
 }
 function testSankhya() {
   const url = document.getElementById('sk-url')?.value.trim();
@@ -2328,6 +2426,7 @@ const notifState = {
 function saveNotificacoes() {
   const emailEl = document.getElementById('notif-email');
   if (emailEl) notifState.email = emailEl.value.trim();
+  persistAll();
   showToast('✓ Preferências de notificação salvas!');
 }
 
@@ -2439,6 +2538,7 @@ function savePwdChange() {
   btn.textContent = 'Salvando...';
   setTimeout(() => {
     user.senha = newPwd;
+    persistAll();
     sucEl.textContent = `Senha de ${user.nome} alterada com sucesso!`;
     sucEl.classList.add('visible');
     btn.disabled = false;
@@ -2449,10 +2549,38 @@ function savePwdChange() {
 }
 
 // ── INICIALIZAÇÃO ─────────────────────────────────────────────────────────────
+function populateEmpresaForm() {
+  const f = empresaState;
+  const set = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
+  set('emp-razao', f.razao); set('emp-fantasia', f.fantasia); set('emp-cnpj', f.cnpj);
+  set('emp-ie', f.ie); set('emp-email', f.email); set('emp-telefone', f.telefone);
+  set('emp-site', f.site); set('emp-cep', f.cep); set('emp-rua', f.rua);
+  set('emp-num', f.num); set('emp-comp', f.comp); set('emp-bairro', f.bairro);
+  set('emp-cidade', f.cidade);
+  const seg = document.getElementById('emp-segmento'); if(seg) seg.value = f.segmento || seg.value;
+}
+
+function populateSankhyaForm() {
+  const f = sankhyaState;
+  const set = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
+  set('sk-url', f.url); set('sk-usuario', f.usuario);
+  set('sk-codparc', f.codparc); set('sk-tipoper', f.tipoper);
+  const iv = document.getElementById('sk-intervalo'); if(iv && f.intervalo) iv.value = f.intervalo;
+}
+
+function resetAllData() {
+  if (!confirm('⚠️ Isso apagará TODOS os dados salvos e restaurará os dados de exemplo. Tem certeza?')) return;
+  localStorage.removeItem(LS_KEY);
+  showToast('Dados resetados! Recarregando...');
+  setTimeout(() => location.reload(), 1200);
+}
+
 renderContacts();
 renderCompanies();
 renderTasks();
 setTimeout(renderRevenueChart, 100);
+setTimeout(populateEmpresaForm, 50);
+setTimeout(populateSankhyaForm, 50);
 
 
 </script>
